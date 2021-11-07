@@ -28,6 +28,7 @@ from .fill import (
     bulk_fill_all,
     bulk_fill_classifiers,
     bulk_fill_defs,
+    bulk_fill_frequency,
     bulk_fill_hanzi,
     bulk_fill_silhouette,
     bulk_fill_sound,

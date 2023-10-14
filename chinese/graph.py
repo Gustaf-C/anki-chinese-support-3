@@ -92,15 +92,15 @@ def chineseGraphs(self, chunks, chunk_size, chunk_name):
     #Characters graph
     char_cumul, char_delta = history(chars, chunks, chunk_size)
     txt += self._title(
-        _("Chinese characters"),
-        _("The number of Chinese characters you have acquired over time"))
+        ("Chinese characters"),
+        ("The number of Chinese characters you have acquired over time"))
 
     data = [
         dict(data=char_cumul, color=3, yaxis=1, bars={'show':False}, lines={"show":True}),
         dict(data=char_delta, color=2, yaxis=2, bars={'show': True}, stack=False)]
     txt += self._graph(id="chinese_chars", data=data,
                        ylabel = "New chars per "+chunk_name,
-                       ylabel2=_("Total characters"),
+                       ylabel2=("Total characters"),
                        conf=dict(
             xaxis=dict(tickDecimals=0), yaxes=[dict(
                     tickDecimals=0, position="right")]))
@@ -109,15 +109,15 @@ def chineseGraphs(self, chunks, chunk_size, chunk_name):
     #Notes graph
     note_cumul, note_delta = history(notes, chunks, chunk_size)
     txt += self._title(
-        _("Chinese Vocabulary"),
-        _("The number of notes containing Chinese that you have acquired over time"))
+        ("Chinese Vocabulary"),
+        ("The number of notes containing Chinese that you have acquired over time"))
 
     data = [
         dict(data=note_cumul, color=4, yaxis=1, bars={'show':False}, lines={"show":True}),
         dict(data=note_delta, color=1, yaxis=2, bars={'show': True}, stack=False)]
     txt += self._graph(id="chinese_notes", data=data,
                        ylabel = "New notes per "+chunk_name,
-                       ylabel2=_("Total notes"),
+                       ylabel2=("Total notes"),
                        conf=dict(
             xaxis=dict(tickDecimals=0), yaxes=[dict(
                     tickDecimals=0, position="right")]))

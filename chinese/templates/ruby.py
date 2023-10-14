@@ -14,7 +14,7 @@
 
 import re
 from anki.hooks import addHook
-from anki.utils import stripHTML
+from anki.utils import strip_html
 
 r = r' ?([^ >]+?)\[(.+?)\]'
 s = r'\[sound:.*?\]'
@@ -43,11 +43,11 @@ def ruby_bottom(txt, *args):
 
 
 def ruby_top_text(txt, *args):
-    return stripHTML(re.sub(r, r'\2 ', no_sound(no_comments(txt))))
+    return strip_html(re.sub(r, r'\2 ', no_sound(no_comments(txt))))
 
 
 def ruby_bottom_text(txt, *args):
-    return stripHTML(re.sub(r, r'\1', no_sound(no_comments(txt))))
+    return strip_html(re.sub(r, r'\1', no_sound(no_comments(txt))))
 
 
 def sound(txt, *args):

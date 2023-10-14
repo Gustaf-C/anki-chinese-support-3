@@ -10,7 +10,7 @@
 
 import re
 from anki import hooks
-from anki.utils import stripHTML
+from anki.utils import strip_html
 from anki.template import TemplateRenderContext
 from .ruby import ruby_top, ruby_top_text, ruby_bottom_text, no_sound
 
@@ -79,7 +79,7 @@ def hanzi_context(
     other_hanzi.sort()
     other_hanzi_values = []
     for v in other_hanzi:
-        value = stripHTML(re.sub(r, r'\1', no_sound(context[v])))
+        value = strip_html(re.sub(r, r'\1', no_sound(context[v])))
         if len(value)>0:
             other_hanzi_values += [value]
     if len(other_hanzi_values)<1:

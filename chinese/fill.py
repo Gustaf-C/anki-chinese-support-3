@@ -380,7 +380,7 @@ def bulk_fill_hanzi():
     mw.progress.start(immediate=True, min=0, max=len(note_ids))
 
     for i, nid in enumerate(note_ids):
-        note = mw.col.getNote(nid)
+        note = mw.col.get_note(nid)
         copy = dict(note)
 
         if has_any_field(copy, fields) and has_any_field(

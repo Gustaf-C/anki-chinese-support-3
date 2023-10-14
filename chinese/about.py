@@ -53,7 +53,7 @@ def showAbout():
     label.setText(text)
     label.setOpenExternalLinks(True)
 
-    buttonBox = QDialogButtonBox(QDialogButtonBox.Ok)
+    buttonBox = QDialogButtonBox(QDialogButtonBox.StandardButton.Ok)
     buttonBox.accepted.connect(dialog.accept)
 
     layout = QVBoxLayout()
@@ -62,4 +62,4 @@ def showAbout():
 
     dialog.setLayout(layout)
     dialog.setWindowTitle('About')
-    dialog.exec_()
+    dialog.exec()

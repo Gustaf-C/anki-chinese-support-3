@@ -97,7 +97,7 @@ def chineseGraphs(self, chunks, chunk_size, chunk_name):
         dict(data=char_cumul, color=3, yaxis=1, bars={'show':False}, lines={"show":True}),
         dict(data=char_delta, color=2, yaxis=2, bars={'show': True}, stack=False)]
     txt += self._graph(id="chinese_chars", data=data,
-                       ylabel="New chars per "+chunk_name,
+                       ylabel = "New chars per "+chunk_name,
                        ylabel2=("Total characters"),
                        conf=dict(
             xaxis=dict(tickDecimals=0), yaxes=[dict(
@@ -114,7 +114,7 @@ def chineseGraphs(self, chunks, chunk_size, chunk_name):
         dict(data=note_cumul, color=4, yaxis=1, bars={'show': False}, lines={"show": True}),
         dict(data=note_delta, color=1, yaxis=2, bars={'show': True}, stack=False)]
     txt += self._graph(id="chinese_notes", data=data,
-                       ylabel="New notes per "+chunk_name,
+                       ylabel = "New notes per "+chunk_name,
                        ylabel2=("Total notes"),
                        conf=dict(
             xaxis=dict(tickDecimals=0), yaxes=[dict(

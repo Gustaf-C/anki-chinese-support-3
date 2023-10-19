@@ -16,7 +16,10 @@
 # Chinese Support Redux.  If not, see <https://www.gnu.org/licenses/>.
 
 from aqt import mw
-from aqt.qt import QDialog, QDialogButtonBox, QLabel, QVBoxLayout
+try:
+    from PyQt5.QtWidgets import QDialog, QDialogButtonBox, QLabel, QVBoxLayout
+except ModuleNotFoundError:
+    from aqt.qt import QDialog, QDialogButtonBox, QLabel, QVBoxLayout
 
 from ._version import __version__
 

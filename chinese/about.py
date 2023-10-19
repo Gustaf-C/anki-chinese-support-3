@@ -15,8 +15,8 @@
 # You should have received a copy of the GNU General Public License along with
 # Chinese Support Redux.  If not, see <https://www.gnu.org/licenses/>.
 
-from PyQt5.QtWidgets import QDialog, QDialogButtonBox, QLabel, QVBoxLayout
 from aqt import mw
+from aqt.qt import QDialog, QDialogButtonBox, QLabel, QVBoxLayout
 
 from ._version import __version__
 

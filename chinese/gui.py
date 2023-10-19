@@ -19,11 +19,10 @@
 
 from functools import partial
 
-from PyQt5.QtGui import QKeySequence
-from PyQt5.QtWidgets import QAction, QActionGroup, QMenu
 from anki.lang import _
 from aqt import mw
 from aqt.utils import openLink
+from aqt.qt import QAction, QActionGroup, QMenu, QKeySequence
 
 from .about import CSR_GITHUB_URL, showAbout
 from .fill import (

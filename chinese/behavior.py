@@ -228,7 +228,7 @@ def fill_simp(hanzi, note):
     if s is not None and s != hanzi:
         set_all(config['fields']['simplified'], note, to=s)
     else:
-        set_all(config['fields']['simplified'], note, to='')
+        set_all(config['fields']['simplified'], note, to=hanzi)
 
 
 def fill_trad(hanzi, note):
@@ -239,7 +239,7 @@ def fill_trad(hanzi, note):
     if t is not None and t != hanzi:
         set_all(config['fields']['traditional'], note, to=t)
     else:
-        set_all(config['fields']['traditional'], note, to='')
+        set_all(config['fields']['traditional'], note, to=hanzi)
 
 
 def fill_frequency(hanzi, note):

@@ -1,11 +1,5 @@
 # Chinese Support Redux
-
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/6b99fcb30a2142d899f79c601a6aa291)](https://app.codacy.com/app/luoliyan/chinese-support-redux?utm_source=github.com&utm_medium=referral&utm_content=luoliyan/chinese-support-redux&utm_campaign=Badge_Grade_Dashboard)
-[![Build Status](https://travis-ci.org/luoliyan/chinese-support-redux.svg?branch=master)](https://travis-ci.org/luoliyan/chinese-support-redux) [![Coverage Status](https://coveralls.io/repos/github/luoliyan/chinese-support-redux/badge.svg?branch=master)](https://coveralls.io/github/luoliyan/chinese-support-redux?branch=master)
-
-[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/X8X01RVSD)
-
-Chinese Support Redux is an Anki 2.1-compatible rewrite of the [original](https://github.com/ttempe/chinese-support-addon) Chinese Support add-on. It offers a number of features that streamline the process of creating flashcards for learning Chinese. The current focus of development effort is on improving the stability of the add-on and the accuracy of its output. Once the core functionality is sufficiently robust and reliable, additional features will be considered.
+Chinese Support 3 is an Anki 23.10-compatible version of the [original](https://github.com/ttempe/chinese-support-addon) and the [redux version](https://github.com/luoliyan/chinese-support-redux) Chinese Support add-on, although it should work with earlier versions as well. It offers a number of features that streamline the process of creating flashcards for learning Chinese. Some of the features had stopped working, and after taking my time to get these back going I thought that I might as well publish it for others to use. 
 
 Please note that the add-on is still in beta and is sometimes shipped in an unstable state. Please upgrade with each new release and report any issues on GitHub. The automated test suite is a work-in-progress, so I still rely heavily on user reports to supplement my own manual testing.
 
@@ -42,7 +36,7 @@ The vast majority of features have been successfully ported, and the add-on is i
 
 The add-on is still in beta. By this I mean “it works, but I wouldn’t trust it with my children”. Expect occasional issues, and please make a back-up before trying it. I use it myself and haven't experienced data loss, but _your_ mileage may vary.
 
-Please report any issues [here](https://github.com/luoliyan/chinese-support-redux/issues) on GitHub. Feature requests are also welcome.
+Please report any issues [here](https://github.com/Gustaf-C/anki-chinese-support/issues) on GitHub. Feature requests are also welcome. Pull requests even more so.
 
 If you are new to the Chinese Support add-on, the wiki from the previous version is still relevant ([here](https://github.com/ttempe/chinese-support-addon/wiki)).
 
@@ -63,84 +57,13 @@ To use the field-filling features:
 
 ## Screenshots
 
-![Screenshot #1](https://raw.githubusercontent.com/luoliyan/chinese-support/master/screenshots/add-card.png)
+![Screenshot #1](https://raw.githubusercontent.com/Gustaf-C/anki-chinese-support/master/screenshots/add-card.png)
 
-![Screenshot #2](https://raw.githubusercontent.com/luoliyan/chinese-support/master/screenshots/view-card.png)
+![Screenshot #2](https://raw.githubusercontent.com/Gustaf-C/anki-chinese-support/master/screenshots/view-card.png)
 
 ## Support
 
-If you encounter any issues, the best way to have these addressed is to [raise them on GitHub](https://github.com/luoliyan/chinese-support-redux/issues). Feature requests are welcome, with the caveat that all good things take time.
+If you encounter any issues, the best way to have these addressed is to [raise them on GitHub](https://github.com/Gustaf-C/anki-chinese-support/issues). Feature requests are welcome, with the caveat that all good things take time. Even better is if you submit your own pull request to fix any issues.
 
-I understand the documentation is sparse. Anyone who wishes to add content to [the wiki](https://github.com/luoliyan/chinese-support-redux/wiki) is more than welcome to.
-
-## Development
-
-### Testing
-
-For those who wish to run the tests locally, this is fairly straightforward.
-
-Clone the repository:
-
-```sh
-git clone https://github.com/luoliyan/chinese-support-redux
-cd chinese-support-redux
-```
-
-Ideally, set up a virtual environment to isolate the project:
-
-```sh
-curl https://pyenv.run | bash
-pyenv virtualenv 3.6.8 csr
-pyenv local csr
-```
-
-Install dependencies and run the tests:
-
-```sh
-pip install -r requirements.txt
-make test
-```
-
-### Debugging with PyCharm
-
-#### (a) Without Anki Source
-
-1. Copy the repo root to the Anki add-ons folder. As of version 2.1, this is `%AppData%\Anki2\addons21`
-2. Create a Python 3.8 virtual environment in PyCharm for the add-on folder (make sure you are running 64-bit Python). This can be done with:
-```python
-import platform
-platform.architecture()
-```
-3. Run the following in the PyCharm console (these could be added to `requirements.txt` instead):
-``` python
-import subprocess
-subprocess.check_call(["pip3", "install", "mypy", "anki", "ankirspy", "aqt", "pyqt5", pyqtwebengine"])
-```
-4. Install the `requirements.txt` for the project venv
-5. Create a file for debugging in PyCharm as:
-``` python
-import aqt
-aqt.run()
-```
-6. Start debugging. The first Anki run will pick up the `tests` folder as a plugin and error out. This is expected.
-7. Go to the Tools → Add-ons menu and disable `tests`
-8. Enjoy coding!
-
-#### (b) With Anki Source
-
-1. Download and extract Anki source code somewhere on the hard drive.
-2. Create a folder such as `anki-addon-dev` on your hard drive and open it on PyCharm as a project. Then, open Anki source code folder as another project within the current project window by choosing Attach.
-3. Under `Preferences → Project → Project Dependencies → anki-addon-dev`, check the box to approve the add-on depends on Anki source code.
-4. Under the run configurations beside run and debug buttons, edit the configuration as follows:
-- Script Path: `[PATH_TO_ANKI_SOURCE_FOLDER]/anki-2.1.13/runanki`
-- Parameters: `-b [PATH_TO_ANKI_ADDON_PROJECT]/anki-addon-dev`
-5. Create your project files and do the development on this path:
-`anki-addon-dev/addons21/[YOUR_PROJECT_FOLDER]`
-6. Happy debugging while developing 
-
-### Additional Guidance
-
-- [Writing Anki Add-ons - Getting Started](https://addon-docs.ankiweb.net/#/getting-started)
-- [Anki development README](https://github.com/ankitects/anki/blob/main/docs/development.md)
-- [Setting up VSCode for Anki add on development](https://chrisk91.me/2018/02/13/Setting-up-VSCode-for-Anki-addon-development.html)
+I understand the documentation is sparse. Anyone who wishes to add content to [the wiki](https://github.com/Gustaf-C/chinese-support-redux/wiki) is more than welcome to.
 

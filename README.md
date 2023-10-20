@@ -63,7 +63,7 @@ To use the field-filling features:
 
 ## Support
 
-If you encounter any issues, the best way to have these addressed is to [raise them on GitHub](https://github.com/Gustaf-C/anki-chinese-support/issues). Feature requests are welcome, with the caveat that all good things take time. Even better is if you submit your own pull request to fix any issues.
+If you encounter any issues, the best way to have these addressed is to [raise them on GitHub](https://github.com/Gustaf-C/anki-chinese-support/issues). Feature requests are welcome, with the caveat that all good things take time. Pull request to fix any issues are even more welcome.
 
 I understand the documentation is sparse. Anyone who wishes to add content to [the wiki](https://github.com/Gustaf-C/chinese-support-redux/wiki) is more than welcome to.
 

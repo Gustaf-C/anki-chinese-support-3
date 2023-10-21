@@ -15,7 +15,6 @@ tests/meta.json
 .DS_Store
 meta.json
 .gitignore
-chinese-support-redux-v0.15.0.zip
 chinese/LICENSE.txt
 config_saved.json
 README.html

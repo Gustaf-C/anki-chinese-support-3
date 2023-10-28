@@ -19,14 +19,9 @@
 
 from functools import partial
 
-from anki.lang import _
 from aqt import mw
 from aqt.utils import openLink
-try:
-    from PyQt5.QtWidgets import QAction, QActionGroup, QMenu
-    from PyQt5.QtGui import QKeySequence
-except ModuleNotFoundError:
-    from aqt.qt import QAction, QActionGroup, QMenu, QKeySequence
+from aqt.qt import QAction, QActionGroup, QMenu, QKeySequence
 
 from .about import CSR_GITHUB_URL, showAbout
 from .fill import (

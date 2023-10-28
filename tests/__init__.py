@@ -53,7 +53,7 @@ else:
 patch.dict('sys.modules', modules).start()
 
 configDir = path.join(path.abspath(path.join(path.dirname(path.abspath(__file__)), pardir)), "chinese")
-with open(path.join(configDir,"config.json"), encoding='utf-8') as config_fd:
+with open(path.join(configDir, "config.json"), encoding='utf-8') as config_fd:
     config = load(config_fd)
 
 patch('aqt.mw.addonManager.getConfig', lambda a: config).start()

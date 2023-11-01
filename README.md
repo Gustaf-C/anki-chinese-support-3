@@ -50,7 +50,7 @@ To use the field-filling features:
 
 1. Add a new note to Anki (press <kbd>a</kbd>)
 2. Select `Chinese (Basic)` or `Chinese (Advanced)` as the note type
-3. Enable Chinese Support Redux for this note type (click `汉字`)
+3. Enable Chinese Support 3 for this note type (click `汉字`)
 4. Enter a word (e.g., 電話) into the `Hanzi` field (sentences will also work)
 5. Press <kbd>Tab</kbd>
 6. The remaining fields should then be populated automatically

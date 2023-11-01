@@ -2,20 +2,20 @@
 # Copyright © 2014 Alex Griffin <alex@alexjgriffin.com>
 # Copyright © 2017-2019 Joseph Lorimer <joseph@lorimer.me>
 #
-# This file is part of Chinese Support Redux.
+# This file is part of Chinese Support 3.
 #
-# Chinese Support Redux is free software: you can redistribute it and/or modify
+# Chinese Support 3 is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by the Free
 # Software Foundation, either version 3 of the License, or (at your option) any
 # later version.
 #
-# Chinese Support Redux is distributed in the hope that it will be useful, but
+# Chinese Support 3 is distributed in the hope that it will be useful, but
 # WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
 # FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
 # more details.
 #
 # You should have received a copy of the GNU General Public License along with
-# Chinese Support Redux.  If not, see <https://www.gnu.org/licenses/>.
+# Chinese Support 3.  If not, see <https://www.gnu.org/licenses/>.
 
 from .consts import bopomofo_replacements
 from .util import cleanup

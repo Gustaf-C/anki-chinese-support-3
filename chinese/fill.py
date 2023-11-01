@@ -368,7 +368,7 @@ def bulk_fill_classifiers():
 def bulk_fill_hanzi():
     prompt = PROMPT_TEMPLATE.format(field_names='<i>hanzi</i>', extra_info='')
 
-    fields = config.get_fields(['traditional', 'simplified'])
+    fields = config.get_fields(['traditional', 'simplified', 'colorHanzi'])
 
     if not askUser(prompt):
         return
@@ -382,10 +382,8 @@ def bulk_fill_hanzi():
     for i, nid in enumerate(note_ids):
         note = mw.col.get_note(nid)
         copy = dict(note)
-
-        if has_any_field(copy, fields) and has_any_field(
-            config['fields']['hanzi'], copy
-        ):
+        # fixme, should the line below be updated?
+        if has_any_field(copy, fields) and has_any_field(config['fields']['hanzi'], copy):
             d_has_fields += 1
 
             msg = '''

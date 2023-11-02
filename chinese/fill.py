@@ -553,11 +553,11 @@ def bulk_fill_frequency():
     n_notfilled = 0
     failed_hanzi = []
 
-    note_ids = mw.col.findNotes("deck:current")
+    note_ids = mw.col.find_notes("deck:current")
     mw.progress.start(immediate=True, min=0, max=len(note_ids))
 
     for i, note_id in enumerate(note_ids):
-        note = mw.col.getNote(note_id)
+        note = mw.col.get_note(note_id)
         copy = dict(note)
 
         # Ensure note type has hanzi present

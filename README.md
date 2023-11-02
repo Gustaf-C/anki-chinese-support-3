@@ -32,6 +32,8 @@ Please note that the add-on is still in beta and is sometimes shipped in an unst
 
 ## Status
 
+I do occasionally run into problems with the addon, but so far I have been able to solve all of them by at worst restaring Anki. For the time being I plan to only release minor maintenence updates, but I do have more features in mind when I have more time available.
+
 The vast majority of features have been successfully ported, and the add-on is in a usable state, albeit with some definite rough edges.
 
 The add-on is still in beta. By this I mean “it works, but I wouldn’t trust it with my children”. Expect occasional issues, and please make a back-up before trying it. I use it myself and haven't experienced data loss, but _your_ mileage may vary.

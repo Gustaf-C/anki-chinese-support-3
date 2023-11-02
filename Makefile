@@ -29,7 +29,7 @@ test:
 	pipenv run pytest --cov=$(PROJECT_SHORT) tests -v
 
 prep:
-	rm -f $(PROJECT_LONG).zip
+	rm -f $(PROJECT_LONG).ankiaddon
 	find . -name .hypothesis -type d -exec rm -rf {} +
 	find . -name .mypy_cache -type d -exec rm -rf {} +
 	find . -name .ropeproject -type d -exec rm -rf {} +

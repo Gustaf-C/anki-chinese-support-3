@@ -48,7 +48,7 @@ class EditManager:
     def onToggle(self, editor):
         self.buttonOn = not self.buttonOn
 
-        mid = str(editor.note.model()['id'])
+        mid = str(editor.note.note_type()['id'])
 
         if self.buttonOn and mid not in config['enabledModels']:
             config['enabledModels'].append(mid)

@@ -75,13 +75,10 @@ def load_menu():
 
     add_menu('Chinese::Bulk Fill')
     add_menu_item('Chinese::Bulk Fill', ('Hanzi'), bulk_fill_hanzi)
-    add_menu_item(
-        'Chinese::Bulk Fill', ('Transcription'), bulk_fill_transcript
-    )
-    add_menu_item('Chinese::Bulk Fill', ('Definitions'), bulk_fill_defs)
     add_menu_item('Chinese::Bulk Fill', ('Classifiers'), bulk_fill_classifiers)
     add_menu_item('Chinese::Bulk Fill', ('Sound'), bulk_fill_sound)
     add_menu_item('Chinese::Bulk Fill', ('Silhouette'), bulk_fill_silhouette)
+    add_menu_item('Chinese::Bulk Fill', ('Frequency'), bulk_fill_frequency)
     add_menu_item('Chinese::Bulk Fill', ('Usage'), bulk_fill_usage)
     add_menu_item('Chinese::Bulk Fill', ('All'), bulk_fill_all)
 

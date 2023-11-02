@@ -19,6 +19,7 @@
 from re import DOTALL, sub
 from unicodedata import category
 
+from aqt import mw
 from .consts import CLOZE_REGEX
 
 
@@ -155,7 +156,7 @@ def save_note(orig, copy):
         if f in copy and copy[f] != orig[f]:
             orig[f] = copy[f]
             n_changed += 1
-    orig.flush()
+    mw.col.update_note(orig)
     return n_changed
 
 

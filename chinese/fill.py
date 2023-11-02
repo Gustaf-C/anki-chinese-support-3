@@ -80,17 +80,17 @@ def bulk_fill_all():
     if not askUser(prompt):
         return
 
-    note_ids = Finder(mw.col).findNotes('deck:current')
+    note_ids = mw.col.find_notes('deck:current')
     mw.progress.start(immediate=True, min=0, max=len(note_ids))
     n_updated = 0
     n_failed = 0  # FIXME
     exclude = config.get_fields(['sound', 'mandarinSound', 'cantoneseSound'])
 
     for i, nid in enumerate(note_ids):
-        note = mw.col.getNote(nid)
+        note = mw.col.get_note(nid)
         fields = [
             f
-            for f in mw.col.models.fieldNames(note.model())
+            for f in mw.col.models.field_names(note.note_type())
             if f not in exclude
         ]
         n_updated += update_fields(note, 'Hanzi', fields)
@@ -102,7 +102,7 @@ def bulk_fill_all():
         }
 
         mw.progress.update(label=msg, value=i)
-        note.flush()
+        mw.col.update_note(note)
 
     mw.progress.finish()
     showInfo(
@@ -130,7 +130,7 @@ def bulk_fill_sound():
     n_updated = 0
     n_failed = 0
 
-    note_ids = Finder(mw.col).findNotes('deck:current')
+    note_ids = mw.col.find_notes('deck:current')
     mw.progress.start(immediate=True, min=0, max=len(note_ids))
 
     for i, nid in enumerate(note_ids):
@@ -198,7 +198,7 @@ def bulk_fill_transcript():
     d_added_pinyin = 0
     n_updated = 0
 
-    note_ids = Finder(mw.col).findNotes('deck:current')
+    note_ids = mw.col.find_notes('deck:current')
     mw.progress.start(immediate=True, min=0, max=len(note_ids))
 
     for i, nid in enumerate(note_ids):
@@ -263,7 +263,7 @@ def bulk_fill_defs():
     n_notfilled = 0
     failed_hanzi = []
 
-    note_ids = Finder(mw.col).findNotes('deck:current')
+    note_ids = mw.col.find_notes('deck:current')
     mw.progress.start(immediate=True, min=0, max=len(note_ids))
 
     for i, note_id in enumerate(note_ids):
@@ -331,7 +331,7 @@ def bulk_fill_classifiers():
     n_updated = 0
     n_failed = 0
 
-    note_ids = Finder(mw.col).findNotes('deck:current')
+    note_ids = mw.col.find_notes('deck:current')
     mw.progress.start(immediate=True, min=0, max=len(note_ids))
 
     for i, nid in enumerate(note_ids):
@@ -376,7 +376,7 @@ def bulk_fill_hanzi():
     d_has_fields = 0
     n_updated = 0
 
-    note_ids = Finder(mw.col).findNotes('deck:current')
+    note_ids = mw.col.find_notes('deck:current')
     mw.progress.start(immediate=True, min=0, max=len(note_ids))
 
     for i, nid in enumerate(note_ids):
@@ -421,7 +421,7 @@ def bulk_fill_silhouette():
     d_has_fields = 0
     n_updated = 0
 
-    note_ids = Finder(mw.col).findNotes('deck:current')
+    note_ids = mw.col.find_notes('deck:current')
     mw.progress.start(immediate=True, min=0, max=len(note_ids))
 
     for i, nid in enumerate(note_ids):
@@ -473,7 +473,7 @@ def bulk_fill_usage():
     n_notfilled = 0
     failed_hanzi = []
 
-    note_ids = Finder(mw.col).findNotes('deck:current')
+    note_ids = mw.col.find_notes('deck:current')
     mw.progress.start(immediate=True, min=0, max=len(note_ids))
 
     for i, note_id in enumerate(note_ids):

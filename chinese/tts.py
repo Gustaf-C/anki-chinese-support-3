@@ -65,8 +65,9 @@ class AudioDownloader:
             'ie': 'UTF-8',
             'text': self.text.encode('utf-8'),
         }
-
-        url = 'http://tts.baidu.com/text2audio?' + urlencode(query)
+        
+        
+        url = 'https://fanyi.baidu.com/gettts?lan=zh&text=' + urlencode(query) + '&spd=2&source=web'
         request = Request(url)
         request.add_header('User-Agent', 'Mozilla/5.0')
         response = urlopen(request, timeout=5)

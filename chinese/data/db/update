@@ -29,7 +29,7 @@ from bz2 import BZ2File
 from csv import reader
 from tarfile import open as taropen
 from zipfile import ZipFile, ZIP_DEFLATED
-import yaspin
+from yaspin import yaspin
 
 DATA_DIR = join(abspath(dirname(abspath(__file__))))
 DB_PATH = join(DATA_DIR, 'chinese.db')
@@ -73,7 +73,7 @@ UNIHAN_INFO = {
 DICT_DEFINITION_INVENTORY = [
     {
         'name': 'CC-CEDICT',
-        'url': 'https://www.mdbg.net/chindict/export/cedict/cedict_1_0_ts_utf-8_mdbg.zip',
+        'url': 'https://www.mdbg.net/chinese/export/cedict/cedict_1_0_ts_utf-8_mdbg.zip',
         'out_filename': 'cedict_ts.u8',
         'lang': 'english',
     },

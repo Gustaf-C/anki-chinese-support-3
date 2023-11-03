@@ -16,6 +16,7 @@
 # You should have received a copy of the GNU General Public License along with
 # Chinese Support 3.  If not, see <https://www.gnu.org/licenses/>.
 
+from unittest import skip
 from unittest.mock import MagicMock, patch
 
 from chinese.behavior import (
@@ -271,43 +272,44 @@ def FillTranscriptBopomofo(Base):
 
 
 class UpdateFields(Base):
-    # def test_all(self):
-    #     class Note(dict):
-    #         def model(self):
-    #             return ''
+    @skip
+    def test_all(self):
+        class Note(dict):
+            def model(self):
+                return ''
 
-    #     expected = {
-    #         'Hanzi': '床单',
-    #         'Hanzi (Color)': '<span class="tone2">床</span><span class="tone1">单</span>',
-    #         'Classifier': (
-    #             '<span class="tone2"><ruby>條<rt>tiáo</rt></ruby></span>|'
-    #             '<span class="tone2">条</span>, '
-    #             '<span class="tone4"><ruby>件<rt>jiàn</rt></ruby></span>, '
-    #             '<span class="tone1"><ruby>張<rt>zhāng</rt></ruby></span>|'
-    #             '<span class="tone1">张</span>, '
-    #             '<span class="tone2"><ruby>床<rt>chuáng</rt></ruby></span>'
-    #         ),
-    #         'Pinyin': '<span class="tone2">chuáng</span><span class="tone1">dān</span> <!-- chuang dan -->',
-    #         'Pinyin (Taiwan)': '<span class="tone2">chuáng</span><span class="tone1">dān</span> <!-- chuang dan -->',
-    #         'Bopomofo': '<span class="tone2">ㄔㄨㄤˊ</span><span class="tone1">ㄉㄢ</span> <!-- ㄔㄨㄤˊㄉㄢ -->',
-    #         'Jyutping': '',
-    #         # FIXME
-    #         'English': ' \tbed sheet\n<br>',
-    #         'German': ' \tLaken, Bettlaken, Betttuch (S)\n<br>',
-    #         'French': ' \tdrap de lit\n<br>',
-    #         'Ruby (Pinyin)': '<span class="tone2"><ruby>床<rt>chuáng</rt></ruby></span><span class="tone1"><ruby>单<rt>dān</rt></ruby></span>',
-    #         'Ruby (Taiwan Pinyin)': '<span class="tone2"><ruby>床<rt>chuáng</rt></ruby></span><span class="tone1"><ruby>单<rt>dān</rt></ruby></span>',
-    #         'Ruby (Bopomofo)': '<span class="tone2"><ruby>床<rt>ㄔㄨㄤˊ</rt></ruby></span><span class="tone1"><ruby>单<rt>ㄉㄢ</rt></ruby></span>',
-    #         'Ruby (Jyutping)': '',
-    #         'Silhouette': '_ _',
-    #         'Sound (Mandarin)': '[sound:床单_google_zh-CN.mp3]',
-    #         'Sound (Cantonese)': '',
-    #     }
-    #     fields = expected.keys()
-    #     note = Note.fromkeys(fields, '')
-    #     note['Hanzi'] = '床单'
-    #     update_fields(note, 'Hanzi', fields)
-    #     self.assertEqual(expected, note)
+        expected = {
+            'Hanzi': '床单',
+            'Hanzi (Color)': '<span class="tone2">床</span><span class="tone1">单</span>',
+            'Classifier': (
+                '<span class="tone2"><ruby>條<rt>tiáo</rt></ruby></span>|'
+                '<span class="tone2">条</span>, '
+                '<span class="tone4"><ruby>件<rt>jiàn</rt></ruby></span>, '
+                '<span class="tone1"><ruby>張<rt>zhāng</rt></ruby></span>|'
+                '<span class="tone1">张</span>, '
+                '<span class="tone2"><ruby>床<rt>chuáng</rt></ruby></span>'
+            ),
+            'Pinyin': '<span class="tone2">chuáng</span><span class="tone1">dān</span> <!-- chuang dan -->',
+            'Pinyin (Taiwan)': '<span class="tone2">chuáng</span><span class="tone1">dān</span> <!-- chuang dan -->',
+            'Bopomofo': '<span class="tone2">ㄔㄨㄤˊ</span><span class="tone1">ㄉㄢ</span> <!-- ㄔㄨㄤˊㄉㄢ -->',
+            'Jyutping': '',
+            # FIXME
+            'English': ' \tbed sheet\n<br>',
+            'German': ' \tLaken, Bettlaken, Betttuch (S)\n<br>',
+            'French': ' \tdrap de lit\n<br>',
+            'Ruby (Pinyin)': '<span class="tone2"><ruby>床<rt>chuáng</rt></ruby></span><span class="tone1"><ruby>单<rt>dān</rt></ruby></span>',
+            'Ruby (Taiwan Pinyin)': '<span class="tone2"><ruby>床<rt>chuáng</rt></ruby></span><span class="tone1"><ruby>单<rt>dān</rt></ruby></span>',
+            'Ruby (Bopomofo)': '<span class="tone2"><ruby>床<rt>ㄔㄨㄤˊ</rt></ruby></span><span class="tone1"><ruby>单<rt>ㄉㄢ</rt></ruby></span>',
+            'Ruby (Jyutping)': '',
+            'Silhouette': '_ _',
+            'Sound (Mandarin)': '[sound:床单_google_zh-CN.mp3]',
+            'Sound (Cantonese)': '',
+        }
+        fields = expected.keys()
+        note = Note.fromkeys(fields, '')
+        note['Hanzi'] = '床单'
+        update_fields(note, 'Hanzi', fields)
+        self.assertEqual(expected, note)
 
     def test_hanzi_empty(self):
         with patch('chinese.sound.AudioDownloader'):
@@ -431,27 +433,30 @@ class FillColor(Base):
         )
 
 
-# class FillAllDefs(Base):
-#     def test_no_classifier_field(self):
-#         note = dict.fromkeys(['English', 'German', 'French'], '')
-#         classifier = (
-#             '<span class="tone1"><ruby>家<rt>jiā</rt></ruby></span>, '
-#             '<span class="tone4"><ruby>個<rt>gè</rt></ruby></span>|'
-#             '<span class="tone4">个</span>'
-#         )
-#         english = ' \tlibrary\n<br><br>Cl: ' + classifier
-#         german = ' \tBibliothek (S, Lit)\n<br><br>Cl: ' + classifier
-#         french = ' \tbibliothèque (lieu)\n<br><br>Cl: ' + classifier
-#         self.assertEqual(fill_all_defs('图书馆', note), 3)
-#         self.assertEqual(note['English'], english)
-#         self.assertEqual(note['French'], french)
-#         self.assertEqual(note['German'], german)
+class FillAllDefs(Base):
 
-#     def test_classifier_field(self):
-#         note = dict.fromkeys(['Classifier', 'English'], '')
-#         self.assertEqual(fill_all_defs('图书馆', note), 1)
-#         self.assertEqual(note['Classifier'], '')
-#         self.assertEqual(note['English'], ' \tlibrary\n<br>')
+    @skip
+    def test_no_classifier_field(self):
+        note = dict.fromkeys(['English', 'German', 'French'], '')
+        classifier = (
+            '<span class="tone1"><ruby>家<rt>jiā</rt></ruby></span>, '
+            '<span class="tone4"><ruby>個<rt>gè</rt></ruby></span>|'
+            '<span class="tone4">个</span>'
+        )
+        english = ' \tlibrary\n<br><br>Cl: ' + classifier
+        german = ' \tBibliothek (S, Lit)\n<br><br>Cl: ' + classifier
+        french = ' \tbibliothèque (lieu)\n<br><br>Cl: ' + classifier
+        self.assertEqual(fill_all_defs('图书馆', note), 3)
+        self.assertEqual(note['English'], english)
+        self.assertEqual(note['French'], french)
+        self.assertEqual(note['German'], german)
+
+    @skip
+    def test_classifier_field(self):
+        note = dict.fromkeys(['Classifier', 'English'], '')
+        self.assertEqual(fill_all_defs('图书馆', note), 1)
+        self.assertEqual(note['Classifier'], '')
+        self.assertEqual(note['English'], ' \tlibrary\n<br>')
 
 
 class FillClassifier(Base):
@@ -467,13 +472,14 @@ class FillClassifier(Base):
 
 
 class FillSimpTradlHanzi(Base):
-    # def test_hanzi_simp_trad_identical(self):
-    #     hanzi = '人'
-    #     note = {'Hanzi': hanzi, 'Simplified': '', 'Traditional': ''}
-    #     fill_simp(hanzi, note)
-    #     fill_trad(hanzi, note)
-    #     self.assertEqual(note['Simplified'], '')
-    #     self.assertEqual(note['Traditional'], '')
+    @skip
+    def test_hanzi_simp_trad_identical(self):
+        hanzi = '人'
+        note = {'Hanzi': hanzi, 'Simplified': '', 'Traditional': ''}
+        fill_simp(hanzi, note)
+        fill_trad(hanzi, note)
+        self.assertEqual(note['Simplified'], '')
+        self.assertEqual(note['Traditional'], '')
 
     def test_hanzi_traditional(self):
         hanzi = '简体字'
@@ -489,11 +495,12 @@ class FillSimpTradlHanzi(Base):
         self.assertEqual(note['Simplified'], '繁体字')
         self.assertEqual(note['Traditional'], '')
 
-    # def test_hanzi_not_in_database(self):
-    #     """Regression test for issue #34"""
-    #     hanzi = '𠂉'
-    #     note = {'Hanzi': hanzi, 'Simplified': '', 'Traditional': ''}
-    #     fill_simp(hanzi, note)
-    #     fill_trad(hanzi, note)
-    #     self.assertEqual(note['Simplified'], '')
-    #     self.assertEqual(note['Traditional'], '')
+    @skip
+    def test_hanzi_not_in_database(self):
+        """Regression test for issue #34"""
+        hanzi = '𠂉'
+        note = {'Hanzi': hanzi, 'Simplified': '', 'Traditional': ''}
+        fill_simp(hanzi, note)
+        fill_trad(hanzi, note)
+        self.assertEqual(note['Simplified'], '')
+        self.assertEqual(note['Traditional'], '')

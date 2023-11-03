@@ -18,7 +18,7 @@
 # Chinese Support 3.  If not, see <https://www.gnu.org/licenses/>.
 
 from os.path import dirname, join, realpath
-from re import match
+import re
 
 
 def get_frequency(hanzi):
@@ -41,7 +41,7 @@ def get_frequency(hanzi):
 
     with open(corpus_path, encoding='utf8') as f:
         for line in f:
-            res = match('[0-9]+ ([0-9.]+) %s$' % hanzi, line)
+            res = re.match('[0-9]+ ([0-9.]+) %s$' % re.escape(hanzi), line)
             if res:
                 freq = float(res.group(1))
                 found = True

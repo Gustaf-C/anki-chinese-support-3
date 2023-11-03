@@ -135,7 +135,7 @@ def bulk_fill_sound():
     mw.progress.start(immediate=True, min=0, max=len(note_ids))
 
     for i, nid in enumerate(note_ids):
-        orig = mw.col.getNote(nid)
+        orig = mw.col.get_note(nid)
         copy = dict(orig)
 
         if has_any_field(copy, fields) and has_any_field(
@@ -203,7 +203,7 @@ def bulk_fill_transcript():
     mw.progress.start(immediate=True, min=0, max=len(note_ids))
 
     for i, nid in enumerate(note_ids):
-        note = mw.col.getNote(nid)
+        note = mw.col.get_note(nid)
         copy = dict(note)
 
         if has_any_field(copy, fields) and has_any_field(
@@ -268,7 +268,7 @@ def bulk_fill_defs():
     mw.progress.start(immediate=True, min=0, max=len(note_ids))
 
     for i, note_id in enumerate(note_ids):
-        note = mw.col.getNote(note_id)
+        note = mw.col.get_note(note_id)
         copy = dict(note)
         hanzi = get_hanzi(copy)
 
@@ -336,7 +336,7 @@ def bulk_fill_classifiers():
     mw.progress.start(immediate=True, min=0, max=len(note_ids))
 
     for i, nid in enumerate(note_ids):
-        note = mw.col.getNote(nid)
+        note = mw.col.get_note(nid)
         copy = dict(note)
         hanzi = get_hanzi(copy)
 
@@ -426,7 +426,7 @@ def bulk_fill_silhouette():
     mw.progress.start(immediate=True, min=0, max=len(note_ids))
 
     for i, nid in enumerate(note_ids):
-        note = mw.col.getNote(nid)
+        note = mw.col.get_note(nid)
         copy = dict(note)
         if has_any_field(config['fields']['silhouette'], copy):
             d_has_fields += 1
@@ -478,7 +478,7 @@ def bulk_fill_usage():
     mw.progress.start(immediate=True, min=0, max=len(note_ids))
 
     for i, note_id in enumerate(note_ids):
-        note = mw.col.getNote(note_id)
+        note = mw.col.get_note(note_id)
         copy = dict(note)
         hanzi = get_hanzi(copy)
 

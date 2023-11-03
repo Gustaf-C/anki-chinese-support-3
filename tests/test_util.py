@@ -16,6 +16,7 @@
 # Chinese Support 3.  If not, see <https://www.gnu.org/licenses/>.
 
 from unittest.mock import Mock
+from aqt import mw
 
 from chinese.util import (
     align,
@@ -113,11 +114,11 @@ class Align(Base):
 class SaveNote(Base):
     def test_save_note(self):
         class Note(dict):
-            flush = Mock()
+            mw.col.update_note = Mock()
 
         note = Note()
         note.update({'hanzi': '我', 'pinyin': ''})
         copy = {'hanzi': '我', 'pinyin': 'wǒ'}
         self.assertEqual(save_note(note, copy), 1)
         self.assertEqual(note['pinyin'], 'wǒ')
-        note.flush.assert_called_once()
+        mw.col.update_note.assert_called_once()

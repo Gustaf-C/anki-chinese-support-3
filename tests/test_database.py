@@ -29,7 +29,7 @@ class Dictionary(Base):
 
     def test_single_classifier(self):
         self.assertEqual(D().get_classifiers('猫'), ['隻|只[zhi1]'])
-        self.assertEqual(D().get_classifiers('签证'), ['個|个[ge4]'])
+        self.assertEqual(D().get_classifiers('思想'), ['個|个[ge4]'])
 
     def test_multiple_classifiers(self):
         self.assertEqual(

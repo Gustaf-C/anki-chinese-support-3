@@ -75,6 +75,8 @@ def load_menu():
 
     add_menu('Chinese::Bulk Fill')
     add_menu_item('Chinese::Bulk Fill', ('Hanzi'), bulk_fill_hanzi)
+    add_menu_item('Chinese::Bulk Fill', ('Definitions'), bulk_fill_defs)
+    add_menu_item('Chinese::Bulk Fill', ('Transcripts'), bulk_fill_transcript)
     add_menu_item('Chinese::Bulk Fill', ('Classifiers'), bulk_fill_classifiers)
     add_menu_item('Chinese::Bulk Fill', ('Sound'), bulk_fill_sound)
     add_menu_item('Chinese::Bulk Fill', ('Silhouette'), bulk_fill_silhouette)

@@ -56,13 +56,31 @@ To use the field-filling features:
 4. Enter a word (e.g., 電話) into the `Hanzi` field (sentences will also work)
 5. Press <kbd>Tab</kbd>
 6. The remaining fields should then be populated automatically
-
+<br><br>
 ## Screenshots
 
 ![Screenshot #1](https://raw.githubusercontent.com/Gustaf-C/anki-chinese-support/master/screenshots/add-card.png)
 
 ![Screenshot #2](https://raw.githubusercontent.com/Gustaf-C/anki-chinese-support/master/screenshots/view-card.png)
-
+<br><br>
 ## Support
 
 If you encounter any issues, the best way to have these addressed is to [raise them on GitHub](https://github.com/Gustaf-C/anki-chinese-support/issues). Feature requests are welcome, with the caveat that all good things take time. Pull request to fix any issues are even more welcome.
+
+## Known Issues
+
+Please see the bug tracker on [GitHub](https://github.com/Gustaf-C/anki-chinese-support/issues).
+
+## Changelog
+
+- Redux to 0.16.0:
+  - Updated for Qt6
+  - Fixed Google & Baidu TTS
+  - Don't automatically create the model decks, still available as template.
+  - Removed extra final new line from translations
+  - Always fill color hanzi when bulk filling
+  - Fixed error when certain special characters were in hanzi field
+  - Added bulk fill frequency
+  - Updated dictionaries
+  - Reduced addon size by not shipping the dictionary backup
+  - Back end tweaks

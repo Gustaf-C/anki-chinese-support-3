@@ -15,8 +15,8 @@
 
 PROJECT_SHORT = chinese
 PROJECT_LONG = chinese-support-3
-VERSION = 0.15.2
-XDG_DATA_HOME ?= $(HOME)/.local/share
+VERSION = 0.16.0
+XDG_DATA_HOME ?= $(HOME)/Library/Application\ Support
 ADDON_PATH = "$(XDG_DATA_HOME)/Anki2/addons21/$(PROJECT_LONG)"
 ZIP_NAME = $(PROJECT_LONG).ankiaddon
 
@@ -29,7 +29,7 @@ test:
 	pipenv run pytest --cov=$(PROJECT_SHORT) tests -v
 
 prep:
-	rm -f $(PROJECT_LONG).ankiaddon
+	rm -f $(ZIP_NAME)
 	find . -name .hypothesis -type d -exec rm -rf {} +
 	find . -name .mypy_cache -type d -exec rm -rf {} +
 	find . -name .ropeproject -type d -exec rm -rf {} +
@@ -55,8 +55,8 @@ pack:
 	pipenv run ./convert-readme.py
 
 extract:
-	rm -rf $(ADDON_PATH)
-	unzip -d $(ADDON_PATH) $(ZIP_NAME)
+	rm -rf "$(ADDON_PATH)"
+	unzip -d "$(ADDON_PATH)" $(ZIP_NAME)
 
 clean:
 	rm $(PROJECT_SHORT)/LICENSE.txt

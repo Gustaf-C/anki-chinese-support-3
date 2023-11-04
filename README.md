@@ -27,6 +27,8 @@ Please note that the add-on is still in beta and is sometimes shipped in an unst
   - [Rubies](https://www.w3schools.com/tags/tag_ruby.asp) (small-print transcription placed above characters)
   - Frequency (from “very basic” to “obscure”) - based on [anki-chinese-word-frequency](https://github.com/ernop/anki-chinese-word-frequency)
   - Usage Sentence Examples - Chinese/English sentence pairs from [Tatoeba](https://tatoeba.org/)
+- Automatic tone change of auto filled pinyin (hanzi field must be populated)
+  - E.g. fen1kai1 -> *Tab* -> fēnkāi (won't replace existing tones)
 - Tone colours (applied to characters, romanisation and Bopomofo)
 - Built-in note types (Basic and Advanced)
 

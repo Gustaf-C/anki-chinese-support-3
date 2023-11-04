@@ -45,6 +45,13 @@ prep:
 pack:
 	pipenv install --dev
 	(cd $(PROJECT_SHORT) && zip -r ../$(ZIP_NAME) *)
+	zip -d $(ZIP_NAME) ./data/db\* \*.DS_Store
+	mkdir -p data/db
+	cp -p chinese/data/db/chinese.db data/db
+	cp -p chinese/data/db/COPYING.txt data/db
+	cp -p chinese/data/db/update.py data/db
+	zip -ur $(ZIP_NAME) data/db
+	rm -rf data
 	pipenv run ./convert-readme.py
 
 extract:

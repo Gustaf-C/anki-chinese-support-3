@@ -19,3 +19,8 @@ config_saved.json
 README.html
 chinese-support*.zip
 chinese-support*.ankiaddon
+
+chinese/data/db
+!chinese/data/db/update.py
+!chinese/data/db/COPYING.txt
+!chinese/data/db/chinese.db

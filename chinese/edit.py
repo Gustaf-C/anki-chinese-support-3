@@ -17,6 +17,8 @@
 # You should have received a copy of the GNU General Public License along with
 # Chinese Support 3.  If not, see <https://www.gnu.org/licenses/>.
 
+import aqt.editor
+import anki.notes
 from anki.hooks import addHook
 from aqt import mw
 
@@ -30,8 +32,7 @@ class EditManager:
         addHook('loadNote', self.updateButton)
         addHook('editFocusLost', self.onFocusLost)
 
-    def setupButton(self, buttons, editor):
-        self.editor = editor
+    def setupButton(self, buttons: list[str], editor: aqt.editor.Editor):
         self.buttonOn = False
         editor._links['chineseSupport'] = self.onToggle
 
@@ -64,20 +65,18 @@ class EditManager:
             editor.web.eval('toggleEditorButton(chineseSupport);')
             self.buttonOn = not self.buttonOn
 
-    def onFocusLost(self, _, note, index):
+    def onFocusLost(self, changed: bool, note: anki.notes.Note, index: int):
         if not self.buttonOn:
-            return False
+            return changed
 
-        allFields = mw.col.models.field_names(note.note_type())
+        if not (note_type := note.note_type()):
+            return changed
+        allFields = mw.col.models.field_names(note_type)
         field = allFields[index]
+        if not update_fields(note, field, allFields):
+            return changed
 
-        if update_fields(note, field, allFields):
-            if index == len(allFields) - 1:
-                self.editor.loadNote(focusTo=index)
-            else:
-                self.editor.loadNote(focusTo=index+1)
-
-        return False
+        return True
 
 
 def append_tone_styling(editor):

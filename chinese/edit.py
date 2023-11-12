@@ -17,10 +17,10 @@
 # You should have received a copy of the GNU General Public License along with
 # Chinese Support 3.  If not, see <https://www.gnu.org/licenses/>.
 
-import aqt.editor
 import anki.notes
+import aqt.editor
 from anki.hooks import addHook
-from aqt import mw
+from aqt import gui_hooks, mw
 
 from .behavior import update_fields
 from .main import config
@@ -29,44 +29,67 @@ from .main import config
 class EditManager:
     def __init__(self):
         addHook('setupEditorButtons', self.setupButton)
-        addHook('loadNote', self.updateButton)
+        addHook('loadNote', self.on_load_note)
         addHook('editFocusLost', self.onFocusLost)
+        gui_hooks.editor_state_did_change.append(self.on_editor_state_did_change)
 
     def setupButton(self, buttons: list[str], editor: aqt.editor.Editor):
-        self.buttonOn = False
-        editor._links['chineseSupport'] = self.onToggle
+        # the button starts as toggled off
+        self.ui_button_toggled_on = False
 
-        button = editor._addButton(
+        button = editor.addButton(
             icon=None,
             cmd='chineseSupport',
+            func=self.onToggle,
             tip='Chinese Support',
             label='<b>汉字</b>',
             id='chineseSupport',
-            toggleable=True)
+            toggleable=True
+        )
 
         return buttons + [button]
 
-    def onToggle(self, editor):
-        self.buttonOn = not self.buttonOn
+    def onToggle(self, editor: aqt.editor.Editor):
+        self.ui_button_toggled_on = not self.ui_button_toggled_on
 
         mid = str(editor.note.note_type()['id'])
 
-        if self.buttonOn and mid not in config['enabledModels']:
+        if self.ui_button_toggled_on and mid not in config['enabledModels']:
             config['enabledModels'].append(mid)
-        elif not self.buttonOn and mid in config['enabledModels']:
+        elif not self.ui_button_toggled_on and mid in config['enabledModels']:
             config['enabledModels'].remove(mid)
 
         config.save()
 
-    def updateButton(self, editor):
-        enabled = str(editor.note.note_type()['id']) in config['enabledModels']
+    def on_editor_state_did_change(
+        self, editor: aqt.editor.Editor, new_state: aqt.editor.EditorState, old_state: aqt.editor.EditorState
+    ):
+        # if the editor just loaded, then we need to set the toggle status of the addon button
+        if old_state is aqt.editor.EditorState.INITIAL:
+            self.updateButton(editor)
 
-        if (enabled and not self.buttonOn) or (not enabled and self.buttonOn):
-            editor.web.eval('toggleEditorButton(chineseSupport);')
-            self.buttonOn = not self.buttonOn
+    def on_load_note(self, editor: aqt.editor.Editor):
+        # if the editor is still in the initial state then the `NoteEditor` component has not mounted to the DOM yet
+        # meaning that `toggleEditorButton` has not yet been injected and so we can't update the ui button
+        # in this case, we rely on the `editor_state_did_change` to let us know when the editor is ready
+        if editor.state is aqt.editor.EditorState.INITIAL:
+            return
+        self.updateButton(editor)
+
+    def updateButton(self, editor: aqt.editor.Editor):
+        if not (note := editor.note):
+            return
+        if not (note_type := note.note_type()):
+            return
+        should_be_enabled = str(note_type['id']) in config['enabledModels']
+
+        # if the ui button does not match the state it should be in, then bring it into sync
+        if should_be_enabled != self.ui_button_toggled_on:
+            editor.web.eval('toggleEditorButton(document.getElementById("chineseSupport"));')
+            self.ui_button_toggled_on = should_be_enabled
 
     def onFocusLost(self, changed: bool, note: anki.notes.Note, index: int):
-        if not self.buttonOn:
+        if not self.ui_button_toggled_on:
             return changed
 
         if not (note_type := note.note_type()):

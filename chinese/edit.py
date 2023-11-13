@@ -34,9 +34,6 @@ class EditManager:
         gui_hooks.editor_state_did_change.append(self.on_editor_state_did_change)
 
     def setupButton(self, buttons: list[str], editor: aqt.editor.Editor):
-        # the button starts as toggled off
-        self.ui_button_toggled_on = False
-
         button = editor.addButton(
             icon=None,
             cmd='chineseSupport',
@@ -49,17 +46,26 @@ class EditManager:
 
         return buttons + [button]
 
+    def is_enabled_for_note(self, note: anki.notes.Note) -> bool:
+        """Check if the plugin is enabled for the given note."""
+        if not (note_type := note.note_type()):
+            return False
+        return str(note_type["id"]) in config["enabledModels"]
+
     def onToggle(self, editor: aqt.editor.Editor):
-        self.ui_button_toggled_on = not self.ui_button_toggled_on
+        if not (note := editor.note):
+            return
+        if not (note_type := note.note_type()):
+            return
 
-        mid = str(editor.note.note_type()['id'])
-
-        if self.ui_button_toggled_on and mid not in config['enabledModels']:
-            config['enabledModels'].append(mid)
-        elif not self.ui_button_toggled_on and mid in config['enabledModels']:
+        mid = str(note_type["id"])
+        if self.is_enabled_for_note(note):
             config['enabledModels'].remove(mid)
+        else:
+            config['enabledModels'].append(mid)
 
         config.save()
+        self.updateButton(editor)
 
     def on_editor_state_did_change(
         self, editor: aqt.editor.Editor, new_state: aqt.editor.EditorState, old_state: aqt.editor.EditorState
@@ -70,8 +76,8 @@ class EditManager:
 
     def on_load_note(self, editor: aqt.editor.Editor):
         # if the editor is still in the initial state then the `NoteEditor` component has not mounted to the DOM yet
-        # meaning that `toggleEditorButton` has not yet been injected and so we can't update the ui button
-        # in this case, we rely on the `editor_state_did_change` to let us know when the editor is ready
+        # meaning that the button has not yet been mounted and so we can't update it
+        # in this case, we rely on the `editor_state_did_change` to let us know later on when the editor is ready
         if editor.state is aqt.editor.EditorState.INITIAL:
             return
         self.updateButton(editor)
@@ -79,17 +85,14 @@ class EditManager:
     def updateButton(self, editor: aqt.editor.Editor):
         if not (note := editor.note):
             return
-        if not (note_type := note.note_type()):
-            return
-        should_be_enabled = str(note_type['id']) in config['enabledModels']
 
-        # if the ui button does not match the state it should be in, then bring it into sync
-        if should_be_enabled != self.ui_button_toggled_on:
-            editor.web.eval('toggleEditorButton(document.getElementById("chineseSupport"));')
-            self.ui_button_toggled_on = should_be_enabled
+        if self.is_enabled_for_note(note):
+            editor.web.eval('document.getElementById("chineseSupport").classList.add("active");')
+        else:
+            editor.web.eval('document.getElementById("chineseSupport").classList.remove("active");')
 
     def onFocusLost(self, changed: bool, note: anki.notes.Note, index: int):
-        if not self.ui_button_toggled_on:
+        if not self.is_enabled_for_note(note):
             return changed
 
         if not (note_type := note.note_type()):

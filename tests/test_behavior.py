@@ -24,6 +24,7 @@ from chinese.behavior import (
     fill_all_rubies,
     fill_classifier,
     fill_color,
+    fill_def,
     fill_simp,
     fill_sound,
     fill_trad,
@@ -431,6 +432,13 @@ class FillColor(Base):
             note['Color Hanzi'],
             '<span class="tone5">Brian</span><span class="tone5">的</span>',
         )
+
+
+class FillDef(Base):
+    def test_trailing_new_line_removed(self):
+        note = {"English": ""}
+        assert fill_def("浴缸", note, "en")
+        self.assertEqual(note["English"], " \tbathtub")
 
 
 class FillAllDefs(Base):

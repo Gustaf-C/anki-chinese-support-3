@@ -26,7 +26,8 @@ install: prep pack extract clean
 
 test:
 	pipenv install --dev
-	pipenv run pytest --cov=$(PROJECT_SHORT) tests -v
+	pipenv run pytest tests -v
+	coverage report -m ./chinese/*.py
 
 prep:
 	rm -f $(ZIP_NAME)

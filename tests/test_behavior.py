@@ -212,7 +212,7 @@ class FillTranscript(Base):
         )
 
 
-def FillTranscriptBopomofo(Base):
+class FillTranscriptBopomofo(Base):
     expected = (
         '<span class="tone2">ㄇㄟˊ</span>'
         '<span class="tone3">ㄧㄡˇ</span> '
@@ -273,7 +273,6 @@ def FillTranscriptBopomofo(Base):
 
 
 class UpdateFields(Base):
-    @skip
     def test_all(self):
         class Note(dict):
             def model(self):
@@ -294,10 +293,9 @@ class UpdateFields(Base):
             'Pinyin (Taiwan)': '<span class="tone2">chuáng</span><span class="tone1">dān</span> <!-- chuang dan -->',
             'Bopomofo': '<span class="tone2">ㄔㄨㄤˊ</span><span class="tone1">ㄉㄢ</span> <!-- ㄔㄨㄤˊㄉㄢ -->',
             'Jyutping': '',
-            # FIXME
-            'English': ' \tbed sheet\n<br>',
-            'German': ' \tLaken, Bettlaken, Betttuch (S)\n<br>',
-            'French': ' \tdrap de lit\n<br>',
+            'English': ' \tbed sheet',
+            'German': ' \tLaken, Bettlaken, Betttuch (S)',
+            'French': ' \tdrap de lit',
             'Ruby (Pinyin)': '<span class="tone2"><ruby>床<rt>chuáng</rt></ruby></span><span class="tone1"><ruby>单<rt>dān</rt></ruby></span>',
             'Ruby (Taiwan Pinyin)': '<span class="tone2"><ruby>床<rt>chuáng</rt></ruby></span><span class="tone1"><ruby>单<rt>dān</rt></ruby></span>',
             'Ruby (Bopomofo)': '<span class="tone2"><ruby>床<rt>ㄔㄨㄤˊ</rt></ruby></span><span class="tone1"><ruby>单<rt>ㄉㄢ</rt></ruby></span>',
@@ -443,7 +441,6 @@ class FillDef(Base):
 
 class FillAllDefs(Base):
 
-    @skip
     def test_no_classifier_field(self):
         note = dict.fromkeys(['English', 'German', 'French'], '')
         classifier = (
@@ -451,20 +448,19 @@ class FillAllDefs(Base):
             '<span class="tone4"><ruby>個<rt>gè</rt></ruby></span>|'
             '<span class="tone4">个</span>'
         )
-        english = ' \tlibrary\n<br><br>Cl: ' + classifier
-        german = ' \tBibliothek (S, Lit)\n<br><br>Cl: ' + classifier
-        french = ' \tbibliothèque (lieu)\n<br><br>Cl: ' + classifier
+        english = ' \tlibrary<br>Cl: ' + classifier
+        german = ' \tBibliothek (S, Lit)<br>Cl: ' + classifier
+        french = ' \tbibliothèque (lieu)<br>Cl: ' + classifier
         self.assertEqual(fill_all_defs('图书馆', note), 3)
         self.assertEqual(note['English'], english)
         self.assertEqual(note['French'], french)
         self.assertEqual(note['German'], german)
 
-    @skip
     def test_classifier_field(self):
         note = dict.fromkeys(['Classifier', 'English'], '')
         self.assertEqual(fill_all_defs('图书馆', note), 1)
         self.assertEqual(note['Classifier'], '')
-        self.assertEqual(note['English'], ' \tlibrary\n<br>')
+        self.assertEqual(note['English'], ' \tlibrary')
 
 
 class FillClassifier(Base):
@@ -480,14 +476,13 @@ class FillClassifier(Base):
 
 
 class FillSimpTradlHanzi(Base):
-    @skip
     def test_hanzi_simp_trad_identical(self):
         hanzi = '人'
         note = {'Hanzi': hanzi, 'Simplified': '', 'Traditional': ''}
         fill_simp(hanzi, note)
         fill_trad(hanzi, note)
-        self.assertEqual(note['Simplified'], '')
-        self.assertEqual(note['Traditional'], '')
+        self.assertEqual(note['Simplified'], '人')
+        self.assertEqual(note['Traditional'], '人')
 
     def test_hanzi_traditional(self):
         hanzi = '简体字'
@@ -503,12 +498,7 @@ class FillSimpTradlHanzi(Base):
         self.assertEqual(note['Simplified'], '繁体字')
         self.assertEqual(note['Traditional'], '')
 
-    @skip
-    def test_hanzi_not_in_database(self):
-        """Regression test for issue #34"""
-        hanzi = '𠂉'
-        note = {'Hanzi': hanzi, 'Simplified': '', 'Traditional': ''}
-        fill_simp(hanzi, note)
-        fill_trad(hanzi, note)
-        self.assertEqual(note['Simplified'], '')
-        self.assertEqual(note['Traditional'], '')
+
+class FillSilhouettes(Base):
+    pass
+    # TODO

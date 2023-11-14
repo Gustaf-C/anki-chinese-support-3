@@ -104,7 +104,7 @@ def colorize_dict(text):
     return sub(r'([\%s|]+)\[(.*?)\]' % HANZI_RANGE, _sub, text)
 
 
-def colorize_fuse(chars, trans, ruby=False):
+def colorize_fuse(chars: list, trans: list, ruby=False):
     assert isinstance(chars, list)
     assert isinstance(trans, list)
 

@@ -150,7 +150,10 @@ def accentuate(text, target):
     return accentuated
 
 
-def replace_tone_marks(pinyin):
+def replace_tone_marks(pinyin: list) -> list:
+    # FIXME
+    # test_tone_styling_unspaced assumes that this should preserve space / no space,
+    # while all other tests assume that it will insert spaces between syllables.
     assert isinstance(pinyin, list)
     result = []
     for bottom, top in separate_ruby(pinyin):
@@ -258,7 +261,7 @@ def tone_number(s):
     return '5'
 
 
-def no_tone(text):
+def no_tone(text: str):
     assert isinstance(text, str)
 
     text = no_color(text)

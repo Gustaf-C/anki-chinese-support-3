@@ -218,6 +218,9 @@ class NoTone(Base):
             'mei you',
         )
 
+    # FIXME
+    # This currently fails due to the strings getting joined with a space, too much work to fix atm.
+    # I'm not sure of the implications changing this would have, so I'm leaving it for now.
     @skip
     def test_tone_styling_unspaced(self):
         self.assertEqual(

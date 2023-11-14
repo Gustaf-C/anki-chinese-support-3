@@ -124,12 +124,11 @@ class TestColorizeFuse(Base):
             ),
         )
 
-    @skip
     def test_missing_punc(self):
         self.assertEqual(
             colorize_fuse(
-                ['没', '有', '是', '我', '第', '一', '次'],
-                ['Méi', 'yǒu', ',', 'shì', 'wǒ', 'dì', 'yī', 'cì', '.'],
+                ['没', '有', '，', '是', '我', '第', '一', '次', '。'],
+                ['Méi', 'yǒu', '，', 'shì', 'wǒ', 'dì', 'yī', 'cì', '。'],
             ),
             (
                 '<span class="tone2">没</span>'

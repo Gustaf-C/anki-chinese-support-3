@@ -33,12 +33,12 @@ def add_model(col):
     mm = col.models
     m = mm.new('Chinese (Basic)')
     for f in fields_list:
-        fm = mm.newField(f)
-        mm.addField(m, fm)
-    t = mm.newTemplate('Recall')
+        fm = mm.new_field(f)
+        mm.add_field(m, fm)
+    t = mm.new_template('Recall')
     t['qfmt'] = recall_front
     t['afmt'] = card_back
-    mm.addTemplate(m, t)
+    mm.add_template(m, t)
     m['css'] += style
     m['addon'] = 'Chinese (Basic)'
     mm.add(m)

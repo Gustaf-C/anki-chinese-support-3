@@ -17,17 +17,24 @@
 # You should have received a copy of the GNU General Public License along with
 # Chinese Support 3.  If not, see <https://www.gnu.org/licenses/>.
 
+import sqlite3
 from os.path import dirname, join, realpath
-from sqlite3 import connect
 
 from .util import add_with_space
 
 
 class Dictionary:
     def __init__(self):
-        db_path = join(dirname(realpath(__file__)), 'data', 'db', 'chinese.db')
-        self.conn = connect(db_path)
+        self.db_path = join(dirname(realpath(__file__)), 'data', 'db', 'chinese.db')
+        self.conn = None
+        self.connect()
         self.c = self.conn.cursor()
+
+    def connect(self) -> None:
+        self.conn = sqlite3.connect(self.db_path)
+
+    def close(self) -> None:
+        self.conn.close()
 
     def create_indices(self):
         self.c.execute(

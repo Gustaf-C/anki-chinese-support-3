@@ -44,8 +44,9 @@ def load():
     gui_hooks.profile_did_open.append(load_menu)
     gui_hooks.profile_did_open.append(add_models)
     gui_hooks.editor_did_load_note.append(append_tone_styling)
+    gui_hooks.profile_did_open.append(dictionary.connect)
     gui_hooks.profile_will_close.append(config.save)
-    gui_hooks.profile_will_close.append(dictionary.conn.close)
+    gui_hooks.profile_will_close.append(dictionary.close)
     gui_hooks.profile_will_close.append(unload_menu)
     CollectionStats.todayStats = wrap(
         CollectionStats.todayStats, todayStats, 'around'

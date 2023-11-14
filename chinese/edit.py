@@ -32,6 +32,7 @@ class EditManager:
         addHook('loadNote', self.on_load_note)
         addHook('editFocusLost', self.onFocusLost)
         gui_hooks.editor_state_did_change.append(self.on_editor_state_did_change)
+        gui_hooks.editor_will_load_note.append(self.on_editor_will_load_note)
 
     def setupButton(self, buttons: list[str], editor: aqt.editor.Editor):
         button = editor.addButton(
@@ -123,13 +124,21 @@ class EditManager:
 
         return True
 
+    def on_editor_will_load_note(self, js: str, note: anki.notes.Note, editor: aqt.editor.Editor):
+        # modified from https://github.com/ijgnd/anki__editor__apply__font_color__background_color__custom_class__custom_style/blob/95a8dc30180d75c38baa36532eaad49fe9e20fa1/src/editor/webview.py#L6C14-L16
+        return (
+            js
+            + f"""
+            require("anki/RichTextInput").lifecycle.onMount(async ({{ customStyles }}) => {{
+                const {{ addStyleTag }} = await customStyles;
+                const {{ element: styleTag }} = await addStyleTag("chineseSupport");
+                styleTag.textContent = `{self.create_css_for_webviews_from_note(note)}`;
+            }});
+            """
+        )
 
-def append_tone_styling(editor):
-    js = 'var css = document.styleSheets[0];'
-
-    for line in editor.note.note_type()['css'].split('\n'):
-        if line.startswith('.tone'):
-            js += 'css.insertRule("{}", css.cssRules.length);'.format(
-                line.rstrip())
-
-    editor.web.eval(js)
+    def create_css_for_webviews_from_note(self, note: anki.notes.Note):
+        if not (note_type := note.note_type()):
+            return ""
+        css = "\n".join(line for line in note_type["css"].splitlines() if line.startswith(".tone"))
+        return css

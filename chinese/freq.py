@@ -41,7 +41,10 @@ def get_frequency(hanzi):
 
     with open(corpus_path, encoding='utf8') as f:
         for line in f:
-            res = re.match('[0-9]+ ([0-9.]+) %s$' % re.escape(hanzi), line)
+            try:  # This avoids a crash if trying to autofill an emoji 👌
+                res = re.match('[0-9]+ ([0-9.]+) %s$' % re.escape(hanzi), line)
+            except TypeError:
+                continue
             if res:
                 freq = float(res.group(1))
                 found = True

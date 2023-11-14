@@ -81,7 +81,7 @@ def fill_def(hanzi, note, lang):
 
     definition = ''
     if get_first(config['fields'][field], note) == '':
-        definition = translate(hanzi, lang).rstrip('<br>\n')
+        definition = translate(hanzi, lang).removesuffix('\n<br>')
         if definition:
             definition += classifier + alt
             set_all(config['fields'][field], note, to=definition)

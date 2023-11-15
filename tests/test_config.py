@@ -112,5 +112,13 @@ class Config(Base):
             '註音符號',
             '量詞',
             '量词',
+            'Simplified Classifier',
+            'Simplified Measure Word',
+            '繁体量詞',
+            '简体量词',
+            'Traditional Classifier',
+            'Traditional Measure Word',
+            '繁體量詞',
+            '繁体量词',
         ]
         self.assertCountEqual(ConfigManager().get_fields(), expected)

@@ -27,6 +27,7 @@ network_integration = False
 
 NullTranslations().install()
 
+# FIXME: Find a better solution for this
 modules = {
     'anki': MagicMock(),
     'anki.find': MagicMock(),

@@ -41,14 +41,6 @@ from .util import (
 )
 
 
-def get_classifier(hanzi, note):
-    cs = dictionary.get_classifiers(hanzi)
-    text = ', '.join(colorize_dict(c) for c in cs)
-    if text and not has_any_field(config['fields']['classifier'], note):
-        return '<br>Cl: ' + text
-    return ''
-
-
 def fill_classifier(hanzi, note):
     cs = dictionary.get_classifiers(hanzi)
     text = ', '.join(colorize_dict(c) for c in cs)
@@ -59,20 +51,17 @@ def fill_classifier(hanzi, note):
     return filled
 
 
-def get_alt(hanzi, note):
+def fill_alt(hanzi, note):
     alts = dictionary.get_variants(hanzi)
     alt = ', '.join(colorize_dict(a) for a in alts)
-    if alt:
-        if not has_any_field(config['fields']['alternative'], note):
-            return '<br>Also written: ' + alt
-        if get_first(config['fields']['alternative'], note) == '':
-            set_all(config['fields']['alternative'], note, to=alt)
-    return ''
+    filled = False
+    if alt and has_any_field(config['fields']['alternative'], note):
+        set_all(config['fields']['alternative'], note, to=alt)
+        filled = True
+    return filled
 
 
 def fill_def(hanzi, note, lang):
-    classifier = get_classifier(hanzi, note)
-    alt = get_alt(hanzi, note)
     field = {'en': 'english', 'de': 'german', 'fr': 'french'}[lang]
     filled = False
 
@@ -83,7 +72,6 @@ def fill_def(hanzi, note, lang):
     if get_first(config['fields'][field], note) == '':
         definition = translate(hanzi, lang).removesuffix('\n<br>')
         if definition:
-            definition += classifier + alt
             set_all(config['fields'][field], note, to=definition)
             filled = True
 
@@ -311,6 +299,7 @@ def update_fields(note, focus_field, fields):
 
     if focus_field in config['fields']['hanzi']:
         if copy[focus_field]:
+            fill_alt(hanzi, copy)
             fill_all_defs(hanzi, copy)
             fill_classifier(hanzi, copy)
             fill_transcript(hanzi, copy)

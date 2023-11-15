@@ -440,26 +440,15 @@ class FillDef(Base):
 
 class FillAllDefs(Base):
 
-    def test_no_classifier_field(self):
+    def test_fill_all_defs(self):
         note = dict.fromkeys(['English', 'German', 'French'], '')
-        classifier = (
-            '<span class="tone1"><ruby>家<rt>jiā</rt></ruby></span>, '
-            '<span class="tone4"><ruby>個<rt>gè</rt></ruby></span>|'
-            '<span class="tone4">个</span>'
-        )
-        english = ' \tlibrary<br>Cl: ' + classifier
-        german = ' \tBibliothek (S, Lit)<br>Cl: ' + classifier
-        french = ' \tbibliothèque (lieu)<br>Cl: ' + classifier
+        english = ' \tlibrary'
+        german = ' \tBibliothek (S, Lit)'
+        french = ' \tbibliothèque (lieu)'
         self.assertEqual(fill_all_defs('图书馆', note), 3)
         self.assertEqual(note['English'], english)
         self.assertEqual(note['French'], french)
         self.assertEqual(note['German'], german)
-
-    def test_classifier_field(self):
-        note = dict.fromkeys(['Classifier', 'English'], '')
-        self.assertEqual(fill_all_defs('图书馆', note), 1)
-        self.assertEqual(note['Classifier'], '')
-        self.assertEqual(note['English'], ' \tlibrary')
 
 
 class FillClassifier(Base):

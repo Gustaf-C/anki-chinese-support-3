@@ -17,8 +17,10 @@
 # You should have received a copy of the GNU General Public License along with
 # Chinese Support 3.  If not, see <https://www.gnu.org/licenses/>.
 
+import anki
+import aqt
 from anki.hooks import addHook
-from aqt import mw
+from aqt import gui_hooks, mw
 
 from .behavior import update_fields
 from .main import config
@@ -27,57 +29,80 @@ from .main import config
 class EditManager:
     def __init__(self):
         addHook('setupEditorButtons', self.setupButton)
-        addHook('loadNote', self.updateButton)
+        addHook('loadNote', self.on_load_note)
         addHook('editFocusLost', self.onFocusLost)
+        gui_hooks.editor_state_did_change.append(self.on_editor_state_did_change)
 
-    def setupButton(self, buttons, editor):
-        self.editor = editor
-        self.buttonOn = False
-        editor._links['chineseSupport'] = self.onToggle
-
-        button = editor._addButton(
+    def setupButton(self, buttons: list[str], editor: aqt.editor.Editor):
+        button = editor.addButton(
             icon=None,
             cmd='chineseSupport',
+            func=self.onToggle,
             tip='Chinese Support',
             label='<b>汉字</b>',
             id='chineseSupport',
-            toggleable=True)
+            toggleable=True
+        )
 
         return buttons + [button]
 
-    def onToggle(self, editor):
-        self.buttonOn = not self.buttonOn
+    def is_enabled_for_note(self, note: anki.notes.Note) -> bool:
+        """Check if the plugin is enabled for the given note."""
+        if not (note_type := note.note_type()):
+            return False
+        return str(note_type["id"]) in config["enabledModels"]
 
-        mid = str(editor.note.note_type()['id'])
+    def onToggle(self, editor: aqt.editor.Editor):
+        if not (note := editor.note):
+            return
+        if not (note_type := note.note_type()):
+            return
 
-        if self.buttonOn and mid not in config['enabledModels']:
-            config['enabledModels'].append(mid)
-        elif not self.buttonOn and mid in config['enabledModels']:
+        mid = str(note_type["id"])
+        if self.is_enabled_for_note(note):
             config['enabledModels'].remove(mid)
+        else:
+            config['enabledModels'].append(mid)
 
         config.save()
+        self.updateButton(editor)
 
-    def updateButton(self, editor):
-        enabled = str(editor.note.note_type()['id']) in config['enabledModels']
+    def on_editor_state_did_change(
+        self, editor: aqt.editor.Editor, new_state: aqt.editor.EditorState, old_state: aqt.editor.EditorState
+    ):
+        # if the editor just loaded, then we need to set the toggle status of the addon button
+        if old_state is aqt.editor.EditorState.INITIAL:
+            self.updateButton(editor)
 
-        if (enabled and not self.buttonOn) or (not enabled and self.buttonOn):
-            editor.web.eval('toggleEditorButton(chineseSupport);')
-            self.buttonOn = not self.buttonOn
+    def on_load_note(self, editor: aqt.editor.Editor):
+        # if the editor is still in the initial state then the `NoteEditor` component has not mounted to the DOM yet
+        # meaning that the button has not yet been mounted and so we can't update it
+        # in this case, we rely on the `editor_state_did_change` to let us know later on when the editor is ready
+        if editor.state is aqt.editor.EditorState.INITIAL:
+            return
+        self.updateButton(editor)
 
-    def onFocusLost(self, _, note, index):
-        if not self.buttonOn:
-            return False
+    def updateButton(self, editor: aqt.editor.Editor):
+        if not (note := editor.note):
+            return
 
-        allFields = mw.col.models.field_names(note.note_type())
+        if self.is_enabled_for_note(note):
+            editor.web.eval('document.getElementById("chineseSupport").classList.add("active");')
+        else:
+            editor.web.eval('document.getElementById("chineseSupport").classList.remove("active");')
+
+    def onFocusLost(self, changed: bool, note: anki.notes.Note, index: int):
+        if not self.is_enabled_for_note(note):
+            return changed
+
+        if not (note_type := note.note_type()):
+            return changed
+        allFields = mw.col.models.field_names(note_type)
         field = allFields[index]
+        if not update_fields(note, field, allFields):
+            return changed
 
-        if update_fields(note, field, allFields):
-            if index == len(allFields) - 1:
-                self.editor.loadNote(focusTo=index)
-            else:
-                self.editor.loadNote(focusTo=index+1)
-
-        return False
+        return True
 
 
 def append_tone_styling(editor):

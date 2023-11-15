@@ -1,3 +1,5 @@
+anki
+aqt[qt6]
 coverage>=4.5.3
 hypothesis>=4.11.6
 pytest-cov>=2.6.1

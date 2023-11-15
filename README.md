@@ -81,11 +81,12 @@ Please see the bug tracker on [GitHub](https://github.com/Gustaf-C/anki-chinese-
 
 ## Changelog
 
-### 0.XX.XX
+### 0.17.0
 
 - **Features**
   - Improved clarity for when 汉字 button is clicked
   - No longer append classifier and alternates to definitions, use the appropriate fields instead
+  - Introduced separate fields for simplified and traditional classifiers
 
 - **Bugfixes**
   - Allow using addon in both add note and browse windows at the same time (known issue: button will not update between windows)

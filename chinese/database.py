@@ -39,8 +39,11 @@ class Dictionary:
             self.c = self.conn.cursor()
 
     def close(self) -> None:
-        self.conn.close()
-        self.conn = None
+        try:  # I have occasionally gotten this error, not sure why.
+            self.conn.close()
+            self.conn = None
+        except AttributeError:
+            pass
 
     def create_indices(self):
         self.c.execute(

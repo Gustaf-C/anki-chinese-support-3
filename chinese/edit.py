@@ -17,8 +17,8 @@
 # You should have received a copy of the GNU General Public License along with
 # Chinese Support 3.  If not, see <https://www.gnu.org/licenses/>.
 
-import anki.notes
-import aqt.editor
+import anki
+import aqt
 from anki.hooks import addHook
 from aqt import gui_hooks, mw
 

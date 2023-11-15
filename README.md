@@ -1,10 +1,12 @@
 # Chinese Support 3
-Chinese Support 3 is an Anki 23.10-compatible version of the [original](https://github.com/ttempe/chinese-support-addon) and the [redux version](https://github.com/luoliyan/chinese-support-redux) Chinese Support add-on, although it should work with earlier versions as well. It offers a number of features that streamline the process of creating flashcards for learning Chinese. Some of the features had stopped working, and after taking my time to get these back going I thought that I might as well publish it for others to use. 
+
+Chinese Support 3 is an Anki 23.10-compatible version of the [original](https://github.com/ttempe/chinese-support-addon) Chinese Support add-on and its [redux version](https://github.com/luoliyan/chinese-support-redux), although it should work with earlier versions as well. It offers a number of features that streamline the process of creating flashcards for learning Chinese. Some of the features had stopped working, and after taking my time to get these back going I thought that I might as well publish it for others to use. 
 
 Please note that the add-on is still in beta and is sometimes shipped in an unstable state. Please upgrade with each new release and report any issues on GitHub. The automated test suite is a work-in-progress, so I still rely heavily on user reports to supplement my own manual testing.
 
-**Important Notes**
+## Important Notes
 
+- **If you have previously downloaded corrupted TTS sound files with the redux addon, these need to be removed and downloaded again for the sound to work.**
 - If you find that a field is not filling at all, please check [config.json](https://github.com/luoliyan/chinese-support-redux/blob/master/chinese/config.json) for the complete list of valid field names. For those migrating from an older version of the add-on, you will need to rename any definition fields to `English`, `German` or `French`, depending on what you want.
 - If tone colours are not showing, ensure that the styling section of the template contains the following CSS:
 
@@ -52,19 +54,23 @@ If you don't already have such a note type, the easiest approach is to use one o
 
 To use the field-filling features:
 
-1. Add a new note to Anki (press <kbd>a</kbd>)
-2. Select `Chinese (Basic)` or `Chinese (Advanced)` as the note type
+1. Add a new note to Anki (press *a*)
+2. Create and select `Chinese (Basic)` or `Chinese (Advanced)` as the note type
 3. Enable Chinese Support 3 for this note type (click `汉字`)
 4. Enter a word (e.g., 電話) into the `Hanzi` field (sentences will also work)
-5. Press <kbd>Tab</kbd>
+5. Press *Tab*
 6. The remaining fields should then be populated automatically
+
 <br><br>
+
 ## Screenshots
 
 ![Screenshot #1](https://raw.githubusercontent.com/Gustaf-C/anki-chinese-support/master/screenshots/add-card.png)
 
 ![Screenshot #2](https://raw.githubusercontent.com/Gustaf-C/anki-chinese-support/master/screenshots/view-card.png)
+
 <br><br>
+
 ## Support
 
 If you encounter any issues, the best way to have these addressed is to [raise them on GitHub](https://github.com/Gustaf-C/anki-chinese-support/issues). Feature requests are welcome, with the caveat that all good things take time. Pull request to fix any issues are even more welcome.
@@ -75,14 +81,35 @@ Please see the bug tracker on [GitHub](https://github.com/Gustaf-C/anki-chinese-
 
 ## Changelog
 
-- Redux to 0.16.0:
+### 0.XX.XX
+
+- **Features**
+  - Improved clarity for when 汉字 button is clicked
+  - No longer append classifier and alternates to definitions, use the appropriate fields instead
+
+- **Bugfixes**
+  - Allow using addon in both add note and browse windows at the same time (known issue: button will not update between windows)
+  - Fixed crash after switching profile
+  - Fixed colorization of fields in editor
+  - Final b and r will no longer be deleted from definitions
+  - Fixed a crash if trying to autofill an emoji
+  - Fixed 汉字 button sometimes not showing whether the addon is actually activated
+
+### Redux to 0.16.0
+
+Note that this is the **last update for 2.1.66**.
+
+- **Features**
   - Updated for Qt6
-  - Fixed Google & Baidu TTS
-  - Don't automatically create the model decks, still available as template.
-  - Removed extra final new line from translations
-  - Always fill color hanzi when bulk filling
-  - Fixed error when certain special characters were in hanzi field
+  - Stop automatically creating the model decks, still available as template
   - Added bulk fill frequency
+  - Simplified and traditional fields will always be filled
+  - Always fill color hanzi when bulk filling
+- **Bugfixes**
+  - Fixed Google & Baidu TTS
+  - Removed extra final new line from translations
+  - Fixed error when certain special characters were in hanzi field
+- **Misc**
   - Updated dictionaries
   - Reduced addon size by not shipping the dictionary backup
-  - Back end tweaks
+  - Backend tweaks

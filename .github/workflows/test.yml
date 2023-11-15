@@ -24,4 +24,4 @@ jobs:
           coverage run -m pytest -v -s ./tests
       - name: Generate Coverage Report  
         run: |  
-          coverage report -m ./chinese/*.py
+          coverage report -m --omit="*/lib/*"

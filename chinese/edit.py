@@ -39,7 +39,7 @@ class EditManager:
             cmd='chineseSupport',
             func=self.onToggle,
             tip='Chinese Support',
-            label='<b>汉字</b>',
+            label='汉字',
             id='chineseSupport',
             toggleable=True
         )
@@ -83,13 +83,32 @@ class EditManager:
         self.updateButton(editor)
 
     def updateButton(self, editor: aqt.editor.Editor):
+        # apply general stylistic fixes to the button
+        editor.web.eval('document.getElementById("chineseSupport").style.lineHeight="0px";')
+
         if not (note := editor.note):
             return
-
         if self.is_enabled_for_note(note):
-            editor.web.eval('document.getElementById("chineseSupport").classList.add("active");')
+            # setting the css variable properties is a hack for now to have the button stand out when active, especially
+            # for dark mode. this is fragile to upstream changes, if upstream ever makes toggle buttons more visible in
+            # dark mode we can revert to not applying the special style properties
+            editor.web.eval(
+                """
+                document.getElementById("chineseSupport").classList.add("active");
+                document.getElementById("chineseSupport").style.setProperty("--button-bg", "var(--button-primary-bg)");
+                document.getElementById("chineseSupport").style.setProperty("--button-gradient-start", "var(--button-primary-gradient-start)");
+                document.getElementById("chineseSupport").style.setProperty("--button-gradient-end", "var(--button-primary-gradient-end)");
+                """
+            )
         else:
-            editor.web.eval('document.getElementById("chineseSupport").classList.remove("active");')
+            editor.web.eval(
+                """
+                document.getElementById("chineseSupport").classList.remove("active");
+                document.getElementById("chineseSupport").style.setProperty("--button-bg", "");
+                document.getElementById("chineseSupport").style.setProperty("--button-gradient-start", "");
+                document.getElementById("chineseSupport").style.setProperty("--button-gradient-end", "");
+                """
+            )
 
     def onFocusLost(self, changed: bool, note: anki.notes.Note, index: int):
         if not self.is_enabled_for_note(note):

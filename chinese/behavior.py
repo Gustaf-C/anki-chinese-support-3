@@ -40,13 +40,57 @@ from .util import (
     set_all,
 )
 
+# FIXME: Do all these return values actually do anything?
 
-def fill_classifier(hanzi, note):
+
+def split_classifiers(classifiers: list[str]) -> tuple[str, str]:
+    # FIXME this needs tests written, 桌子 is a good one to test with
+    if not classifiers:
+        return (None, None)
+
+    split = []
+    for classifier in classifiers:
+        if "|" in classifier:
+            classifier = classifier.split("|")
+            classifier[0] = classifier[0] + classifier[1][1:]
+        else:
+            classifier = [classifier, classifier]
+        split.append(classifier)
+
+    simp_mws = []
+    trad_mws = []
+    for classifier in split:
+        # Yes, this feels backwards, but it's correct
+        simp_mws.append(classifier[1])
+        trad_mws.append(classifier[0])
+
+    simplified_classifiers = ', '.join(colorize_dict(c) for c in simp_mws)
+    traditional_classifiers = ', '.join(colorize_dict(c) for c in trad_mws)
+
+    return (simplified_classifiers, traditional_classifiers)
+
+
+def fill_classifiers(hanzi, note):
     cs = dictionary.get_classifiers(hanzi)
     text = ', '.join(colorize_dict(c) for c in cs)
+    simplified_classifier, traditional_classifier = split_classifiers(cs)
     filled = False
+
+    # Both classifiers
     if text and has_any_field(config['fields']['classifier'], note):
         set_all(config['fields']['classifier'], note, to=text)
+        filled = True
+
+    # Simplified classifiers
+    if simplified_classifier and has_any_field(config['fields']['classifierSimplified'], note):
+        print(simplified_classifier)
+        set_all(config['fields']['classifierSimplified'], note, to=simplified_classifier)
+        filled = True
+
+    # Traditional classifiers
+    if traditional_classifier and has_any_field(config['fields']['classifierTraditional'], note):
+        print(traditional_classifier)
+        set_all(config['fields']['classifierTraditional'], note, to=traditional_classifier)
         filled = True
     return filled
 
@@ -301,7 +345,7 @@ def update_fields(note, focus_field, fields):
         if copy[focus_field]:
             fill_alt(hanzi, copy)
             fill_all_defs(hanzi, copy)
-            fill_classifier(hanzi, copy)
+            fill_classifiers(hanzi, copy)
             fill_transcript(hanzi, copy)
             fill_trad(hanzi, copy)
             fill_color(hanzi, copy)

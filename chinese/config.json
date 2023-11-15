@@ -110,6 +110,18 @@
             "量詞",
             "量词"
         ],
+        "classifierSimplified": [
+            "Simplified Classifier",
+            "Simplified Measure Word",
+            "繁体量詞",
+            "简体量词"
+        ],
+        "classifierTraditional": [
+            "Traditional Classifier",
+            "Traditional Measure Word",
+            "繁體量詞",
+            "繁体量词"
+        ],
         "alternative": [
             "Also Written",
             "Alternative"

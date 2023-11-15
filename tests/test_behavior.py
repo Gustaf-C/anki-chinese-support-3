@@ -21,7 +21,7 @@ from unittest.mock import MagicMock, patch
 from chinese.behavior import (
     fill_all_defs,
     fill_all_rubies,
-    fill_classifier,
+    fill_classifiers,
     fill_color,
     fill_def,
     fill_simp,
@@ -459,7 +459,7 @@ class FillClassifier(Base):
             '<span class="tone4"><ruby>個<rt>gè</rt></ruby></span>|'
             '<span class="tone4">个</span>'
         )
-        self.assertEqual(fill_classifier('图书馆', note), 1)
+        self.assertEqual(fill_classifiers('图书馆', note), 1)
         self.assertEqual(note['Classifier'], classifier)
 
 

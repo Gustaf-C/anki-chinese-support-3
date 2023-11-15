@@ -22,14 +22,13 @@
 
 from time import sleep
 
-from anki.find import Finder
 from aqt import mw
 from aqt.utils import askUser, showInfo, showText
 
 from .behavior import (
     fill_all_defs,
     fill_all_rubies,
-    fill_classifier,
+    fill_classifiers,
     fill_color,
     fill_frequency,
     fill_silhouette,
@@ -344,7 +343,7 @@ def bulk_fill_classifiers():
             n_processed += 1
 
             if all_fields_empty(copy, fields):
-                if fill_classifier(hanzi, copy):
+                if fill_classifiers(hanzi, copy):
                     n_updated += 1
                 else:
                     n_failed += 1

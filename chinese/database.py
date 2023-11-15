@@ -27,14 +27,20 @@ class Dictionary:
     def __init__(self):
         self.db_path = join(dirname(realpath(__file__)), 'data', 'db', 'chinese.db')
         self.conn = None
+        self.c = None
+        # FIXME: I would prefer not to call self.connect() here, but that causes
+        # problems with the unit tests due to import shenanigans.
+        # I don't feel like fixing that atm, so this is a workaround for now.
         self.connect()
-        self.c = self.conn.cursor()
 
     def connect(self) -> None:
-        self.conn = sqlite3.connect(self.db_path)
+        if not self.conn:
+            self.conn = sqlite3.connect(self.db_path)
+            self.c = self.conn.cursor()
 
     def close(self) -> None:
         self.conn.close()
+        self.conn = None
 
     def create_indices(self):
         self.c.execute(

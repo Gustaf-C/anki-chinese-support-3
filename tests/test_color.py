@@ -15,8 +15,6 @@
 # You should have received a copy of the GNU General Public License along with
 # Chinese Support 3.  If not, see <https://www.gnu.org/licenses/>.
 
-from unittest import skip
-
 from hypothesis import given
 from hypothesis.strategies import integers
 

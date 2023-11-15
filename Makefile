@@ -27,7 +27,7 @@ install: prep pack extract clean
 test:
 	pipenv install --dev
 	pipenv run pytest tests -v
-	coverage report -m --omit="*/lib/*"
+	coverage report -m --omit="*/lib/*,*/tests/*"
 
 prep:
 	rm -f $(ZIP_NAME)

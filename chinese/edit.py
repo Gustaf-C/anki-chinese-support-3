@@ -125,17 +125,26 @@ class EditManager:
         return True
 
     def on_editor_will_load_note(self, js: str, note: anki.notes.Note, editor: aqt.editor.Editor):
-        # modified from https://github.com/ijgnd/anki__editor__apply__font_color__background_color__custom_class__custom_style/blob/95a8dc30180d75c38baa36532eaad49fe9e20fa1/src/editor/webview.py#L6C14-L16
-        return (
-            js
-            + f"""
-            require("anki/RichTextInput").lifecycle.onMount(async ({{ customStyles }}) => {{
-                const {{ addStyleTag }} = await customStyles;
-                const {{ element: styleTag }} = await addStyleTag("chineseSupport");
-                styleTag.textContent = `{self.create_css_for_webviews_from_note(note)}`;
-            }});
+        # modified combination of:
+        # https://github.com/ijgnd/anki__editor__apply__font_color__background_color__custom_class__custom_style/blob/95a8dc30180d75c38baa36532eaad49fe9e20fa1/src/editor/webview.py#L6C14-L16
+        # https://github.com/kleinerpirat/anki-css-injector/blob/f5e94989f79b7a01cd73783487cff0ef838d0c9d/ts/src/injector.ts
+        my_css = self.create_css_for_webviews_from_note(note)
+        if not my_css:
+            return js
+        my_js = f"""
+            (async () => {{
+                while (!require("anki/RichTextInput").instances?.length) {{
+                    await new Promise(requestAnimationFrame);
+                }}
+
+                for (const {{ customStyles }} of require("anki/RichTextInput").instances) {{
+                    const {{ addStyleTag }} = await customStyles;
+                    const {{ element }} = await addStyleTag("chineseSupport");
+                    element.textContent = `{my_css}`;
+                }}
+            }})();
             """
-        )
+        return js + my_js
 
     def create_css_for_webviews_from_note(self, note: anki.notes.Note):
         if not (note_type := note.note_type()):

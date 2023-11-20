@@ -1,6 +1,6 @@
 # Chinese Support 3
 
-Chinese Support 3 is an Anki 23.10-compatible version of the [original](https://github.com/ttempe/chinese-support-addon) Chinese Support add-on and its [redux version](https://github.com/luoliyan/chinese-support-redux), although it should work with earlier versions as well. It offers a number of features that streamline the process of creating flashcards for learning Chinese. Some of the features had stopped working, and after taking my time to get these back going I thought that I might as well publish it for others to use. 
+Chinese Support 3 is an Anki 23.10-compatible version of the [original](https://github.com/ttempe/chinese-support-addon) Chinese Support add-on and its [redux version](https://github.com/luoliyan/chinese-support-redux), although it should work with earlier versions as well. It offers a number of features that streamline the process of creating flashcards for learning Chinese. Some of the features had stopped working, and after taking my time to get these back going I thought that I might as well publish it for others to use.
 
 Please note that the add-on is still in beta and is sometimes shipped in an unstable state. Please upgrade with each new release and report any issues on GitHub. The automated test suite is a work-in-progress, so I still rely heavily on user reports to supplement my own manual testing.
 
@@ -91,7 +91,6 @@ Please see the bug tracker on [GitHub](https://github.com/Gustaf-C/anki-chinese-
 - **Bugfixes**
   - Allow using addon in both add note and browse windows at the same time (known issue: button will not update between windows)
   - Fixed crash after switching profile
-  - Fixed colorization of fields in editor
   - Final b and r will no longer be deleted from definitions
   - Fixed a crash if trying to autofill an emoji
   - Fixed 汉字 button sometimes not showing whether the addon is actually activated

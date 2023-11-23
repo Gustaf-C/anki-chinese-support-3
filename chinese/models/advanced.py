@@ -27,13 +27,13 @@ recognition_front = '''\
 
 <span class=chinese>{{Hanzi}}</span>
 '''
-
+# FIXME, custom hint removed, needs to be cleaned up from other code
 recall_front = '''\
 <div class=tags>{{Deck}} {{#Tags}} -- {{/Tags}}{{Tags}}</div>
 
 <div>{{English}}</div>
 <div>{{Silhouette}}</div>
-<div class=hint>{{hint_transcription:Pinyin}}</div>
+<div class=hint>{{hint:Pinyin}}</div>
 '''
 
 card_back = '''\

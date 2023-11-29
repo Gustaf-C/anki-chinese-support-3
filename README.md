@@ -1,11 +1,12 @@
 # Chinese Support 3
 
-Chinese Support 3 is an Anki 23.10-compatible version of the [original](https://github.com/ttempe/chinese-support-addon) Chinese Support add-on and its [redux version](https://github.com/luoliyan/chinese-support-redux), although it should work with earlier versions as well. It offers a number of features that streamline the process of creating flashcards for learning Chinese. Some of the features had stopped working, and after taking my time to get these back going I thought that I might as well publish it for others to use.
+Chinese Support 3 is an Anki 23.10-compatible version of the [original](https://github.com/ttempe/chinese-support-addon) Chinese Support add-on and its [redux version](https://github.com/luoliyan/chinese-support-redux). I have tested it on 2.1.66 which seems to work, no testing has been done on earlier versions though. It offers a number of features that streamline the process of creating flashcards for learning Chinese. Some of the features had stopped working, and after taking my time to get these back going I thought that I might as well publish it for others to use.
 
 Please note that the add-on is still in beta and is sometimes shipped in an unstable state. Please upgrade with each new release and report any issues on GitHub. The automated test suite is a work-in-progress, so I still rely heavily on user reports to supplement my own manual testing.
 
 ## Important Notes
 
+- The templates can be found under 'Choose Note Type' -> 'Manage' -> 'Add'
 - **If you have previously downloaded corrupted TTS sound files with the redux addon, these need to be removed and downloaded again for the sound to work.**
 - If you find that a field is not filling at all, please check [config.json](https://github.com/luoliyan/chinese-support-redux/blob/master/chinese/config.json) for the complete list of valid field names. For those migrating from an older version of the add-on, you will need to rename any definition fields to `English`, `German` or `French`, depending on what you want.
 - If tone colours are not showing, ensure that the styling section of the template contains the following CSS:
@@ -55,13 +56,13 @@ If you don't already have such a note type, the easiest approach is to use one o
 To use the field-filling features:
 
 1. Add a new note to Anki (press *a*)
-2. Create and select `Chinese (Basic)` or `Chinese (Advanced)` as the note type
+2. Create (manage -> add) and select `Chinese (Basic)` or `Chinese (Advanced)` as the note type
 3. Enable Chinese Support 3 for this note type (click `汉字`)
 4. Enter a word (e.g., 電話) into the `Hanzi` field (sentences will also work)
 5. Press *Tab*
 6. The remaining fields should then be populated automatically
 
-<br><br>
+<br>
 
 ## Screenshots
 
@@ -69,7 +70,7 @@ To use the field-filling features:
 
 ![Screenshot #2](https://raw.githubusercontent.com/Gustaf-C/anki-chinese-support/master/screenshots/view-card.png)
 
-<br><br>
+<br>
 
 ## Support
 

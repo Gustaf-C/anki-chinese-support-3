@@ -35,6 +35,7 @@ from tests import Base
 
 
 class FormatPinyin(Base):
+    # https://github.com/luoliyan/chinese-support-redux/issues/78
     def test_issue_78(self):
         note = {'Hanzi': '壮观', 'Pinyin': 'zhuàngguān'}
         expected = (

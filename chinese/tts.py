@@ -73,6 +73,10 @@ class AudioDownloader:
         request = Request(url)
         request.add_header('User-Agent', 'Mozilla/5.0')
 
+        # baidu web server seems to behave nondeterministically when the alpn extension is not supplied where it
+        # sometimes returns 200 OK but with Content-Length 0
+        # when the extension is sent, the audio/mpeg content is returned as expected
+        # automatically sending the alpn extension was added in python 3.10, but Anki is currently using 3.9
         context = ssl.create_default_context()
         context.set_alpn_protocols(['http/1.1'])
 

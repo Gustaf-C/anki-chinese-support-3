@@ -6,8 +6,7 @@
 # Inspiration: Tymon Warecki
 # License: GNU AGPL, version 3 or later; http://www.gnu.org/copyleft/agpl.html
 
-from .aws import AWS4Signer
-
+import ssl
 from os.path import basename, exists, join
 from re import sub
 from urllib.parse import urlencode
@@ -17,6 +16,8 @@ import requests
 from aqt import mw
 from gtts import gTTS
 from gtts.tts import gTTSError
+
+from .aws import AWS4Signer
 
 requests.packages.urllib3.disable_warnings()
 
@@ -64,19 +65,27 @@ class AudioDownloader:
             'lan': self.lang,
             'ie': 'UTF-8',
             'text': self.text.encode('utf-8'),
+            'spd': 2,
+            'source': 'web',
         }
-        
-        
-        url = 'https://fanyi.baidu.com/gettts?lan=zh&text=' + urlencode(query) + '&spd=2&source=web'
+
+        url = 'https://fanyi.baidu.com/gettts?' + urlencode(query)
         request = Request(url)
         request.add_header('User-Agent', 'Mozilla/5.0')
-        response = urlopen(request, timeout=5)
 
-        if response.code != 200:
-            raise ValueError('{}: {}'.format(response.code, response.msg))
+        # baidu web server seems to behave nondeterministically when the alpn extension is not supplied where it
+        # sometimes returns 200 OK but with Content-Length 0
+        # when the extension is sent, the audio/mpeg content is returned as expected
+        # automatically sending the alpn extension was added in python 3.10, but Anki is currently using 3.9
+        context = ssl.create_default_context()
+        context.set_alpn_protocols(['http/1.1'])
 
-        with open(self.path, 'wb') as audio:
-            audio.write(response.read())
+        with urlopen(request, context=context, timeout=5) as response, open(self.path, 'wb') as audio:
+            if response.code != 200:
+                raise ValueError('{}: {}'.format(response.code, response.msg))
+
+            bytes_response = response.read()
+            audio.write(bytes_response)
 
     def get_aws(self):
         signer = AWS4Signer(service='polly')

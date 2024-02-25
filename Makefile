@@ -15,7 +15,7 @@
 
 PROJECT_SHORT = chinese
 PROJECT_LONG = chinese-support-3
-VERSION = 0.17.0
+VERSION = 0.17.1
 XDG_DATA_HOME ?= $(HOME)/Library/Application\ Support
 ADDON_PATH = "$(XDG_DATA_HOME)/Anki2/addons21/$(PROJECT_LONG)"
 ZIP_NAME = $(PROJECT_LONG).ankiaddon

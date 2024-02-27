@@ -32,6 +32,7 @@ class EditManager:
         addHook('loadNote', self.on_load_note)
         addHook('editFocusLost', self.onFocusLost)
         gui_hooks.editor_state_did_change.append(self.on_editor_state_did_change)
+        gui_hooks.editor_will_load_note.append(self.on_editor_will_load_note)
 
     def setupButton(self, buttons: list[str], editor: aqt.editor.Editor):
         button = editor.addButton(
@@ -123,13 +124,30 @@ class EditManager:
 
         return True
 
+    def on_editor_will_load_note(self, js: str, note: anki.notes.Note, editor: aqt.editor.Editor):
+        # modified combination of:
+        # https://github.com/ijgnd/anki__editor__apply__font_color__background_color__custom_class__custom_style/blob/95a8dc30180d75c38baa36532eaad49fe9e20fa1/src/editor/webview.py#L6C14-L16
+        # https://github.com/kleinerpirat/anki-css-injector/blob/f5e94989f79b7a01cd73783487cff0ef838d0c9d/ts/src/injector.ts
+        my_css = self.create_css_for_webviews_from_note(note)
+        if not my_css:
+            return js
+        my_js = f"""
+            (async () => {{
+                while (!require("anki/RichTextInput").instances?.length) {{
+                    await new Promise(requestAnimationFrame);
+                }}
 
-def append_tone_styling(editor):
-    js = 'var css = document.styleSheets[0];'
+                for (const {{ customStyles }} of require("anki/RichTextInput").instances) {{
+                    const {{ addStyleTag }} = await customStyles;
+                    const {{ element }} = await addStyleTag("chineseSupport");
+                    element.textContent = `{my_css}`;
+                }}
+            }})();
+            """
+        return js + my_js
 
-    for line in editor.note.note_type()['css'].split('\n'):
-        if line.startswith('.tone'):
-            js += 'css.insertRule("{}", css.cssRules.length);'.format(
-                line.rstrip())
-
-    editor.web.eval(js)
+    def create_css_for_webviews_from_note(self, note: anki.notes.Note):
+        if not (note_type := note.note_type()):
+            return ""
+        css = "\n".join(line for line in note_type["css"].splitlines() if line.startswith(".tone"))
+        return css

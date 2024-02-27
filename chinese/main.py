@@ -26,7 +26,7 @@ from .database import Dictionary
 config = ConfigManager()
 dictionary = Dictionary()
 
-from .edit import append_tone_styling, EditManager
+from .edit import EditManager
 from .graph import todayStats
 from .gui import load_menu, unload_menu
 from .models import advanced, basic
@@ -43,7 +43,6 @@ def load():
     chinese.install()
     gui_hooks.profile_did_open.append(load_menu)
     gui_hooks.profile_did_open.append(add_models)
-    gui_hooks.editor_did_load_note.append(append_tone_styling)
     gui_hooks.profile_did_open.append(dictionary.connect)
     gui_hooks.profile_will_close.append(config.save)
     gui_hooks.profile_will_close.append(dictionary.close)

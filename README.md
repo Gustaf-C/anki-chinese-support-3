@@ -82,6 +82,11 @@ Please see the bug tracker on [GitHub](https://github.com/Gustaf-C/anki-chinese-
 
 ## Changelog
 
+### 0.XX.X
+
+- **Bugfixes**
+  - Fix colorization of fields in editor (known issue: visual bug in editor with Anki 23.12.1 and earlier)
+
 ### 0.17.1
 
 - **Bugfixes**

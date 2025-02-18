@@ -25,7 +25,7 @@ card_back = '''\
 <div>{{English}}</div>
 <div class=reading>{{Pinyin}}</div>
 <div class=chinese>{{Color}}</div>
-<!-- {{Sound}}-->
+<div class="chinese-support-sound">{{Sound}}</div>
 '''
 
 

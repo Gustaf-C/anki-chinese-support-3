@@ -3,13 +3,10 @@ from gtts.tokenizer import pre_processors, Tokenizer, tokenizer_cases
 from gtts.utils import _minimize, _len, _clean_tokens, _translate_url
 from gtts.lang import tts_langs, _fallback_deprecated_lang
 
-from six.moves import urllib
-try:
-    from urllib.parse import quote
-    import urllib3
-except ImportError:
-    from urllib import quote
-    import urllib2
+# Python 3 imports
+from urllib.parse import quote
+from urllib import request as urllib_request
+import urllib3
 import requests
 import logging
 import json
@@ -262,7 +259,7 @@ class gTTS:
                 with requests.Session() as s:
                     # Send request
                     r = s.send(request=pr,
-                               proxies=urllib.request.getproxies(),
+                               proxies=urllib_request.getproxies(),
                                verify=False)
 
                 log.debug("headers-%i: %s", idx, r.request.headers)

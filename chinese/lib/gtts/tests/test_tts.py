@@ -2,7 +2,7 @@
 import os
 import pytest
 from mock import Mock
-from six.moves import urllib
+from urllib import request as urllib_request
 
 from gtts.tts import gTTS, gTTSError
 from gtts.langs import _main_langs

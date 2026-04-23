@@ -170,18 +170,41 @@ def fill_transcript(hanzi, note):
     n_filled = 0
     separated = split_hanzi(hanzi)
 
+    # There are three cases to consider here for each target:
+    #
+    #   1. The note has an empty field for the target. In this case, the
+    #      extension should populate the field using the hanzi.
+    #
+    #   2. The note has a populated field that matches the extension's hanzi
+    #      translation. In this case, do nothing. The reason that this case
+    #      exists is because `reformat_transcript()` uses regex to split the 
+    #      pinyin, and in some cases it will take an initially correct pinyin
+    #      and resplit it into an incorrect pinyin. For example, the extension
+    #      correctly turns 可能 into "kě néng", but `reformat_transcript()` would
+    #      incorrectly resplit it into "kěn éng".
+    #
+    #   3. The note has a populated field that does not match the extension's
+    #      Hanzi translation. This can happen when the user inputs a hanzi with
+    #      multiple definitions (such as 都: dōu = all, dū = metropolis) and the
+    #      version selected by the extension is not the version wanted by the 
+    #      user. In this case, they will override the field with a new pinyin
+    #      value (ex. du1 -> dū) and the extension will be expected to split 
+    #      and recolorize it while ignoring the original hanzi translation.
+
     for key, target, type_ in [
         ('bopomofo', 'bopomofo', 'trad'),
         ('cantonese', 'jyutping', 'trad'),
         ('pinyin', 'pinyin', 'simp'),
         ('pinyinTaiwan', 'pinyin_tw', 'trad'),
     ]:
+        trans = colorize(transcribe(separated.copy(), target, type_), target)
+        trans = hide(trans, no_tone(trans))
         if get_first(config['fields'][key], note) == '':
-            trans = colorize(transcribe(separated, target, type_), target)
-            trans = hide(trans, no_tone(trans))
             set_all(config['fields'][key], note, to=trans)
             n_filled += 1
-        else:
+        elif get_first(config['fields'][key], note) == trans:
+            continue
+        else: 
             reformat_transcript(note, key, target)
 
     return n_filled

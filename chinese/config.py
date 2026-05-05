@@ -21,22 +21,51 @@
 from collections import defaultdict
 from json import dump, load
 from os.path import dirname, exists, join, realpath
+from pathlib import Path
 
 from aqt import mw
+from aqt.utils import showInfo
+
+
+def _get_old_addon_config_file() -> Path:
+    apath = Path(mw.pm.addonFolder())
+    # This is mainly for tests, since 'current-module-dir is mocked, but we cannot mock/patch this function,
+    #  it is called at the import time, by main.py, ugh
+    if exists(apath):
+        ret = apath.resolve(strict=True) / '1752008591/config_saved.json'
+    else:
+        ret = None
+
+    return ret
 
 
 class ConfigManager:
-    default_path = join(dirname(realpath(__file__)), 'config.json')
-    saved_path = join(dirname(realpath(__file__)), 'config_saved.json')
 
-    with open(default_path, encoding='utf-8') as f:
-        config = defaultdict(str, load(f))
+    def __init__(self):
+        self._load_config()
+        mw.addonManager.setConfigUpdatedAction(__name__, lambda *_: self._config_updated_handler())
 
-    if exists(saved_path):
-        with open(saved_path, encoding='utf-8') as f:
-            config_saved = defaultdict(str, load(f))
-        if config_saved['version'] == config['version']:
-            config = config_saved
+        if self.config['firstRun']:
+            spath = _get_old_addon_config_file()
+
+            if spath and spath.is_file():
+                # Old MacDonald had a farm. E-I-E-I-O.
+                with open(spath, 'r', encoding='utf-8') as f:
+                    config_saved = defaultdict(str, load(f))
+                    for k in ['enabledModels', 'speech', 'target', 'max_examples', 'fields']:
+                        self.config[k] = config_saved[k]
+                showInfo( 'Configuration from the old "Chinese Support 3" was imported.\n\n'
+                          'This is a one-time post install action, if you update the configuration in the original addon, '
+                          'it will not be synchronized.\n\n'
+                          'It is recommended to disable the old addon.')
+                self.save()
+
+
+    def _load_config(self):
+        self.config = mw.addonManager.getConfig(__name__)
+
+    def _config_updated_handler(self):
+        self._load_config()
 
     def __setitem__(self, key, value):
         self.config[key] = value
@@ -48,8 +77,6 @@ class ConfigManager:
         self.config.update(d)
 
     def save(self):
-        with open(self.saved_path, 'w', encoding='utf-8') as f:
-            dump(self.config, f)
         mw.addonManager.writeConfig(__name__, self.config)
 
     def get_fields(self, groups=None):

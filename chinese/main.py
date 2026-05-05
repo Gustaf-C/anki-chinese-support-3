@@ -36,6 +36,7 @@ from .templates import chinese, ruby
 if config['firstRun']:
     dictionary.create_indices()
     config['firstRun'] = False
+    config.save()  # need for correct meta.json handling
 
 
 def load():

@@ -137,6 +137,12 @@
             "Color Traditional",
             "Traditional (Color)"
         ],
+        "colorHanziTaiwan": [
+            "Hanzi (Taiwan Color)"
+        ],
+        "colorTraditionalTaiwan": [
+            "Traditional (Taiwan Color)"
+        ],
         "colorCantonese": [
             "ColorCant",
             "Color Cantonese",

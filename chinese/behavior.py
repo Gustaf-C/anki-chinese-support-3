@@ -225,8 +225,8 @@ def fill_color(hanzi, note):
     #traditional color
     tradHanzi = get_first(config['fields']['traditional'], note)
     if tradHanzi:
-        tradHanzi = split_hanzi(cleanup(tradHanzi), grouped=False)
-        colorized = colorize_fuse(tradHanzi, trans)
+        tradHanziSplit = split_hanzi(cleanup(tradHanzi), grouped=False)
+        colorized = colorize_fuse(tradHanziSplit, trans)
         set_all(config['fields']['colorTraditional'], note, to=colorized)
 
     #cantonese color
@@ -236,6 +236,23 @@ def fill_color(hanzi, note):
         cantoTrans = sanitize_transcript(cantoField, "jyutping", grouped=False)
         colorized = colorize_fuse(hanzi, cantoTrans)
         set_all(config['fields']['colorCantonese'], note, to=colorized)
+
+    # ### Taiwan color ###
+    # Check if config.json already contains required fields
+    if 'colorHanziTaiwan' in config['fields']:
+        target='pinyin_tw'
+        field_group='pinyinTaiwan'
+
+        field = get_first(config['fields'][field_group], note)
+        trans = sanitize_transcript(field, target, grouped=False)
+        trans = split_transcript(' '.join(trans), target, grouped=False)
+        colorized = colorize_fuse(hanzi, trans)
+        set_all(config['fields']['colorHanziTaiwan'], note, to=colorized)
+
+        if tradHanzi and 'colorTraditionalTaiwan' in config['fields']:
+            colorized = colorize_fuse(tradHanziSplit, trans)
+            set_all(config['fields']['colorTraditionalTaiwan'], note, to=colorized)
+
 
 
 def fill_sound(hanzi, note):

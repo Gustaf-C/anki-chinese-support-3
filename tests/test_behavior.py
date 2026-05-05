@@ -391,6 +391,40 @@ class FillColor(Base):
             ),
         )
 
+    def test_taiwan_color(self):
+        note = dict.fromkeys(['Color Hanzi', 'Hanzi (Taiwan Color)', 'Traditional (Taiwan Color)'], '')
+
+        note["pinyin"] = "cōngming"
+        note["Pinyin (Taiwan)"] = "cōngmíng"
+        note["Traditional"] = "聰明"
+
+        fill_color('聪明', note)
+        
+        self.assertEqual(
+            note['Color Hanzi'],
+            (
+                '<span class="tone1">聪</span>'
+                '<span class="tone5">明</span>'
+            ),
+        )
+
+        self.assertEqual(
+            note['Hanzi (Taiwan Color)'],
+            (
+                '<span class="tone1">聪</span>'
+                '<span class="tone2">明</span>'
+            ),
+        )
+
+        self.assertEqual(
+            note['Traditional (Taiwan Color)'],
+            (
+                '<span class="tone1">聰</span>'
+                '<span class="tone2">明</span>'
+            ),
+        )
+
+
     def test_chars_no_pinyin(self):
         """Should not generate color output if no available reading."""
 

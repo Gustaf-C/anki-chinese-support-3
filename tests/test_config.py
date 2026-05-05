@@ -120,5 +120,7 @@ class Config(Base):
             'Traditional Measure Word',
             '繁體量詞',
             '繁体量词',
+            'Hanzi (Taiwan Color)',
+            'Traditional (Taiwan Color)'
         ]
         self.assertCountEqual(ConfigManager().get_fields(), expected)

@@ -5,6 +5,7 @@
     "speech": "google|zh-CN",
     "target": "pinyin",
     "max_examples": -1,
+    "lowercase_ruby": true,
     "fields": {
         "hanzi": [
             "Chinese",

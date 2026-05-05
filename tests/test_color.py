@@ -18,8 +18,10 @@
 from hypothesis import given
 from hypothesis.strategies import integers
 
+import chinese.config
 from chinese.color import colorize, colorize_dict, colorize_fuse
-from tests import Base
+from tests import Base, config
+from unittest.mock import MagicMock, Mock, patch
 
 
 class TestColorize(Base):
@@ -35,6 +37,19 @@ class TestColorize(Base):
             '<span class="tone4">xiàn</span> <span class="tone4">zài</span>',
         )
 
+    def test_uppercase(self):
+        self.assertEqual(
+            colorize(['Wǒ', 'shì']),
+            '<span class="tone3">Wǒ</span> <span class="tone4">shì</span>',
+        )
+        self.assertEqual(
+            colorize(['我[Wǒ]'], ruby_whole=True),
+            '<span class="tone3">我[wǒ]</span>',
+        )
+        self.assertEqual(
+            colorize(['我[Wǒ]']), '我[<span class="tone3">wǒ</span>]'
+        )
+
     def test_ruby(self):
         self.assertEqual(
             colorize(['你[nǐ]']), '你[<span class="tone3">nǐ</span>]'
@@ -43,6 +58,29 @@ class TestColorize(Base):
             colorize(['你[nǐ]'], ruby_whole=True),
             '<span class="tone3">你[nǐ]</span>',
         )
+
+    def test_lowercase_ruby(self):
+        with patch("chinese.color.config") as mconf:
+            mconf.config = config
+            mconf.get_config_scalar_value = lambda kv: \
+                chinese.config.ConfigManager.get_config_scalar_value(mconf, kv)
+
+            _lowercase_ruby = config['lowercase_ruby']
+
+            config['lowercase_ruby'] = True
+            self.assertEqual(
+                colorize(['你[Nǐ]']), '你[<span class="tone3">nǐ</span>]'
+            )
+            config['lowercase_ruby'] = False
+            self.assertEqual(
+                colorize(['你[Nǐ]']), '你[<span class="tone3">Nǐ</span>]'
+            )
+            config.pop('lowercase_ruby', None)
+            self.assertEqual(
+                colorize(['你[Nǐ]']), '你[<span class="tone3">Nǐ</span>]'
+            )
+            # We need to restore it since test_uppercase() depends on it
+            config['lowercase_ruby'] = _lowercase_ruby
 
     def test_bopomofo(self):
         self.assertEqual(

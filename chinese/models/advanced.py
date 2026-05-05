@@ -50,7 +50,7 @@ card_back = '''\
 </div>
 
 <div class=comment> <!-- Word lookup -->
-<a href="http://www.mdbg.net/chindict/chindict.php?page=worddict&wdrst=0&wdqb={{text:Hanzi}}">MDBG</a>,
+<a href="http://www.mdbg.net/chinese/dictionary?page=worddict&wdrst=0&wdqb={{text:Hanzi}}">MDBG</a>,
 <a href="http://zhidao.baidu.com/q?word={{text:Hanzi}}&ct=17&pn=0&tn=ikaslist&rn=10&lm=0&fr=search">百度</a>,
 <a href="http://image.baidu.com/i?ie=utf-8&word={{text:Hanzi}}">Image</a>
 </div>

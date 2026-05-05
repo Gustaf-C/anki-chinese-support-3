@@ -35,6 +35,7 @@ from tests import Base
 
 
 class FormatPinyin(Base):
+    # https://github.com/luoliyan/chinese-support-redux/issues/78
     def test_issue_78(self):
         note = {'Hanzi': '壮观', 'Pinyin': 'zhuàngguān'}
         expected = (
@@ -46,6 +47,68 @@ class FormatPinyin(Base):
         self.assertEqual(note['Pinyin'], expected)
         reformat_transcript(note, 'pinyin', 'pinyin')
         self.assertEqual(note['Pinyin'], expected)
+
+    def test_fill_transcript_pinyin_empty(self):
+        hanzi = '可能'
+        note = {'Hanzi': hanzi, 'Pinyin': ''}
+        # TODO: The '<!-- ken eng -->' is incorrecly split because it relies
+        #       on regexp splitting of keneng instead of using the two <span>
+        #       containers as a source-of-truth.
+        expected = (
+            '<span class="tone3">kě</span>'
+            '<span class="tone2">néng</span> '
+            '<!-- ken eng -->'
+        )
+        fill_transcript(hanzi, note)
+        self.assertEqual(note['Pinyin'], expected)
+        fill_transcript(hanzi, note) # Verify stability with a second attempt
+        self.assertEqual(note['Pinyin'], expected)
+
+    def test_fill_transcript_pinyin_unchanged(self):
+        hanzi = '可能'
+        # The contents of `pinyin_html` is taken from fill_transcript('可能').
+        # See the testcase `test_fill_transcript_pinyin_empty` above.
+        pinyin_html = (
+            '<span class="tone3">kě</span>'
+            '<span class="tone2">néng</span> '
+            '<!-- ken eng -->'
+        )
+        note = {'Hanzi': hanzi, 'Pinyin': pinyin_html}
+        fill_transcript(hanzi, note)
+        self.assertEqual(note['Pinyin'], pinyin_html)
+        fill_transcript(hanzi, note) # Verify stability with a second attempt
+        self.assertEqual(note['Pinyin'], pinyin_html)
+
+    def test_fill_transcript_pinyin_changed(self):
+        # The word 大都 has two translations:
+        #   dàdōu: "for the most part"
+        #   dàdū: "metropolis"
+        # The extension will initially give the user the pinyin "dàdū".
+        # If the user changes it to "dàdōu", the extension should split it into
+        # "dà dōu" without reverting it to the initial "dàdū" transcription.
+        hanzi = '大都'
+        note = {'Hanzi': hanzi, 'Pinyin': ''}
+        expected_initial = (
+            '<span class="tone4">dà</span>'
+            '<span class="tone1">dū</span> '
+            '<!-- da du -->'
+        )
+        fill_transcript(hanzi, note)
+        self.assertEqual(note['Pinyin'], expected_initial)
+        fill_transcript(hanzi, note) # Verify stability with a second attempt
+        self.assertEqual(note['Pinyin'], expected_initial)
+
+        # User changes the pinyin to "da4dou1"
+        note['Pinyin'] = 'da4dou1'
+        expected_final = (
+            '<span class="tone4">dà</span>'
+            '<span class="tone1">dōu</span> '
+            '<!-- da dou -->'
+        )
+        fill_transcript(hanzi, note)
+        self.assertEqual(note['Pinyin'], expected_final)
+        fill_transcript(hanzi, note) # Verify stability with a second attempt
+        self.assertEqual(note['Pinyin'], expected_final)
 
 
 class FillSound(Base):

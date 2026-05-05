@@ -18,6 +18,7 @@ style = u'''\
 .note {color:gray;font-size:12pt;margin-top:20pt;}
 .hint {font-size:12pt;}
 .answer { background-color:bisque; border:dotted;border-width:1px}
+.chinese-support-sound { display: none; }
 
 .tone1 {color: red;}
 .tone2 {color: orange;}

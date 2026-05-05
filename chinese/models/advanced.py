@@ -46,8 +46,9 @@ card_back = '''\
 {{#Simplified}}<div class=chinese><span class=comment>Simplified:</span> {{Simplified}}</div>{{/Simplified}}
 {{#Traditional}}<div class=chinese><span class=comment>Traditional:</span> {{Traditional}}</div>{{/Traditional}}
 {{#Classifier}}<div class=chinese><span class=comment>Classifier:</span> {{Classifier}}</div>{{/Classifier}}
-{{#Also Written}}<div class=chinese><span class=comment>Also written:</span> {{Also Written}}</div>{{/Also Written}}<!-- {{Sound}}-->
+{{#Also Written}}<div class=chinese><span class=comment>Also written:</span> {{Also Written}}</div>{{/Also Written}}
 </div>
+<div class="chinese-support-sound">{{Sound}}</div>
 
 <div class=comment> <!-- Word lookup -->
 <a href="http://www.mdbg.net/chindict/chindict.php?page=worddict&wdrst=0&wdqb={{text:Hanzi}}">MDBG</a>,

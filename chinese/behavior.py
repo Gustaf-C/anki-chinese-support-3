@@ -198,7 +198,7 @@ def reformat_transcript(note, group, target):
     clean = cleanup(transcript)
     split = split_transcript(clean, target, grouped=True)
     accent = accentuate(split, target)
-    color = colorize(accent)
+    color = colorize(accent, target)
     hidden = hide(color, no_tone(color))
 
     set_all(config['fields'][group], note, to=hidden)

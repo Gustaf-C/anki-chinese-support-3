@@ -104,7 +104,7 @@ RUBY_REGEX = r'[%s]\[\s*([a-zü%s]+[%s]?)(.*?\])' % (
 HALF_RUBY_REGEX = f'([A-Za-zü{PINYIN_VOWELS}]+[{TONE_NUMBERS}]?)'
 
 NOT_PINYIN_REGEX = (
-    f"([^A-Za-zü{BOPOMOFO_RANGE}{PINYIN_VOWELS}{CMN_TONE_NUMBERS}ˊˇˋ˙'])"
+    f"([^A-Za-zü{BOPOMOFO_RANGE}{PINYIN_VOWELS}{TONE_NUMBERS}ˊˇˋ˙'])"
 )
 
 TRANSCRIPT_REGEX_TEMPLATE = (

@@ -490,3 +490,28 @@ class FillSimpTradlHanzi(Base):
 class FillSilhouettes(Base):
     pass
     # TODO
+
+
+class FocusedHanziSource(Base):
+    def test_focused_field_wins(self):
+        note = {'Expression': '猫', 'Hanzi': '狗', 'Pinyin': ''}
+        update_fields(note, 'Hanzi', tuple(note))
+        self.assertIn('gǒu', note['Pinyin'])
+        self.assertNotIn('māo', note['Pinyin'])
+
+    def test_other_focus_uses_its_content(self):
+        note = {'Expression': '猫', 'Hanzi': '狗', 'Pinyin': ''}
+        update_fields(note, 'Expression', tuple(note))
+        self.assertIn('māo', note['Pinyin'])
+        self.assertNotIn('gǒu', note['Pinyin'])
+
+    def test_fallback_when_focus_missing(self):
+        # bulk-style focus naming a field the note does not have
+        note = {'Expression': '猫', 'Pinyin': ''}
+        update_fields(note, 'Hanzi', tuple(note))
+        self.assertIn('māo', note['Pinyin'])
+
+    def test_single_field_unchanged(self):
+        note = {'Hanzi': '床单', 'Pinyin': ''}
+        update_fields(note, 'Hanzi', tuple(note))
+        self.assertIn('chuáng', note['Pinyin'])

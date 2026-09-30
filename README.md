@@ -33,6 +33,9 @@ Please note that the add-on is still in beta and is sometimes shipped in an unst
 - Automatic tone change of auto filled pinyin (hanzi field must be populated)
   - E.g. fen1kai1 -> *Tab* -> fēnkāi (won't replace existing tones)
 - Tone colours (applied to characters, romanisation and Bopomofo)
+- Plain-text transcripts (opt-in via `plainTranscript: true` in the add-on
+  config: stores `sī kǎo` instead of tone-coloured spans, for note types
+  with their own review-time colouring)
 - Built-in note types (Basic and Advanced)
 
 ## Status

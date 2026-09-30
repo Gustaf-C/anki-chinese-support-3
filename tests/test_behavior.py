@@ -490,3 +490,31 @@ class FillSimpTradlHanzi(Base):
 class FillSilhouettes(Base):
     pass
     # TODO
+
+
+class PlainTranscript(Base):
+    def setUp(self):
+        super().setUp()
+        from chinese.main import config
+        self.config = config
+        self.old = config['plainTranscript']
+
+    def tearDown(self):
+        self.config['plainTranscript'] = self.old
+
+    def test_fill_plain(self):
+        self.config['plainTranscript'] = True
+        note = {'Hanzi': '电话', 'Pinyin': ''}
+        fill_transcript('电话', note)
+        self.assertEqual(note['Pinyin'], 'diàn huà')
+
+    def test_reformat_plain(self):
+        self.config['plainTranscript'] = True
+        note = {'Hanzi': '电话', 'Pinyin': 'dian4 hua4'}
+        reformat_transcript(note, 'pinyin', 'pinyin')
+        self.assertEqual(note['Pinyin'], 'diàn huà')
+
+    def test_default_is_markup(self):
+        note = {'Hanzi': '电话', 'Pinyin': ''}
+        fill_transcript('电话', note)
+        self.assertIn('<span class="tone', note['Pinyin'])

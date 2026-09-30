@@ -166,6 +166,21 @@ def fill_usage(hanzi, note):
     return filled
 
 
+def plain_transcript(words, target):
+    """Plain spaced transcript (diacritics) without color spans or hidden
+    search text. Numbered remnants fall back to diacritics; anything else
+    passes through untouched."""
+    text = ' '.join(words)
+    if target in ['pinyin', 'pinyin_tw', 'jyutping']:
+        try:
+            split_target = target if target in ['pinyin_tw', 'jyutping'] else 'pinyin'
+            flat = split_transcript(text, split_target, grouped=False)
+            text = ' '.join(accentuate(flat, target))
+        except Exception:
+            pass
+    return ' '.join(text.split())
+
+
 def fill_transcript(hanzi, note):
     n_filled = 0
     separated = split_hanzi(hanzi)
@@ -177,8 +192,12 @@ def fill_transcript(hanzi, note):
         ('pinyinTaiwan', 'pinyin_tw', 'trad'),
     ]:
         if get_first(config['fields'][key], note) == '':
-            trans = colorize(transcribe(separated, target, type_), target)
-            trans = hide(trans, no_tone(trans))
+            words = transcribe(separated, target, type_)
+            if config['plainTranscript']:
+                trans = plain_transcript(words, target)
+            else:
+                trans = colorize(words, target)
+                trans = hide(trans, no_tone(trans))
             set_all(config['fields'][key], note, to=trans)
             n_filled += 1
         else:
@@ -198,10 +217,13 @@ def reformat_transcript(note, group, target):
     clean = cleanup(transcript)
     split = split_transcript(clean, target, grouped=True)
     accent = accentuate(split, target)
-    color = colorize(accent)
-    hidden = hide(color, no_tone(color))
+    if config['plainTranscript']:
+        trans = plain_transcript(accent, target)
+    else:
+        color = colorize(accent)
+        trans = hide(color, no_tone(color))
 
-    set_all(config['fields'][group], note, to=hidden)
+    set_all(config['fields'][group], note, to=trans)
 
 
 def fill_color(hanzi, note):

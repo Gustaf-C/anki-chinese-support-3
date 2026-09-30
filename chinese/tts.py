@@ -7,6 +7,7 @@
 # License: GNU AGPL, version 3 or later; http://www.gnu.org/copyleft/agpl.html
 
 import ssl
+from hashlib import sha1
 from os.path import basename, exists, join
 from re import sub
 from urllib.parse import urlencode
@@ -21,6 +22,29 @@ from .aws import AWS4Signer
 
 requests.packages.urllib3.disable_warnings()
 
+# Readable audio names are kept while they fit; hashed once they would
+# exceed filesystem filename limits (sentences can be hundreds of bytes
+# in UTF-8). Well under the common 255-byte limit either way.
+MAX_AUDIO_BASENAME_BYTES = 180
+AUDIO_NAME_KEEP_CHARS = 40
+
+
+def audio_filename(text, service, lang):
+    """Deterministic media filename for a TTS request.
+
+    Short texts keep the long-standing human-readable form
+    ``<text>_<service>_<lang>.mp3`` byte-for-byte; longer ones fall back
+    to ``<first-40-chars>_<sha1>.mp3`` so the download cannot fail with
+    OSError. Identical inputs always map to the same file, so the
+    already-downloaded check keeps working.
+    """
+    base = sub(r'[/:*?"<>|]', '', text)
+    suffix = '_%s_%s.mp3' % (service, lang)
+    if len((base + suffix).encode('utf-8')) > MAX_AUDIO_BASENAME_BYTES:
+        digest = sha1(text.encode('utf-8')).hexdigest()[:12]
+        base = base[:AUDIO_NAME_KEEP_CHARS] + '_' + digest
+    return base + suffix
+
 
 class AudioDownloader:
     def __init__(self, text, source='google|zh-CN'):
@@ -34,10 +58,10 @@ class AudioDownloader:
         }.get(self.service)
 
     def get_path(self):
-        filename = '{}_{}_{}.mp3'.format(
-            self.sanitize(self.text), self.service, self.lang
+        return join(
+            mw.col.media.dir(),
+            audio_filename(self.text, self.service, self.lang),
         )
-        return join(mw.col.media.dir(), filename)
 
     def sanitize(self, s):
         return sub(r'[/:*?"<>|]', '', s)

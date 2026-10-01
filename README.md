@@ -62,6 +62,26 @@ To use the field-filling features:
 5. Press *Tab*
 6. The remaining fields should then be populated automatically
 
+### Sentence fields (sentence-mining note types)
+
+Note types with a separate sentence field can fill sentence destinations
+from the sentence, independently of the word fill. In the add-on config,
+point `sentenceFields` at your fields:
+
+```json
+"sentenceFields": {
+    "hanzi": ["Sentence"],
+    "pinyin": ["Sentence Pinyin"],
+    "sound": ["Sentence Audio"]
+}
+```
+
+Tab (or bulk fill) then generates word *and* sentence fields in one pass:
+the word pass leaves claimed sentence fields entirely alone (including
+when the word is cleared), and the sentence pass fills only its mapped
+destinations, fill-if-empty only. Empty lists (the default) reproduce the
+old behaviour exactly.
+
 <br>
 
 ## Screenshots

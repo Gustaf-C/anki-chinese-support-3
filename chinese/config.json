@@ -5,6 +5,11 @@
     "speech": "google|zh-CN",
     "target": "pinyin",
     "max_examples": -1,
+    "sentenceFields": {
+        "hanzi": [],
+        "pinyin": [],
+        "sound": []
+    },
     "fields": {
         "hanzi": [
             "Chinese",

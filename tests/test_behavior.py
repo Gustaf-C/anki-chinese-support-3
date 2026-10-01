@@ -490,3 +490,56 @@ class FillSimpTradlHanzi(Base):
 class FillSilhouettes(Base):
     pass
     # TODO
+
+
+class SentenceFields(Base):
+    def setUp(self):
+        super().setUp()
+        from chinese.main import config
+        self.config = config
+        self.old = config['sentenceFields']
+
+    def tearDown(self):
+        self.config['sentenceFields'] = self.old
+
+    def use_mapping(self):
+        self.config['sentenceFields'] = {
+            'hanzi': ['Sentence'],
+            'pinyin': ['Sentence Pinyin'],
+            'sound': ['Sentence Audio'],
+        }
+
+    def test_empty_mapping_changes_nothing(self):
+        note = {'Expression': '猫', 'Sentence': '狗叫',
+                'Pinyin': '', 'Sentence Pinyin': ''}
+        self.assertFalse(update_fields(note, 'Sentence', tuple(note)))
+        self.assertEqual(note['Pinyin'], '')
+        self.assertEqual(note['Sentence Pinyin'], '')
+
+    def test_tab_out_of_sentence_fills_sentence_only(self):
+        self.use_mapping()
+        note = {'Expression': '猫', 'Sentence': '狗叫', 'Pinyin': '',
+                'Sentence Pinyin': '', 'Sentence Audio': ''}
+        self.assertTrue(update_fields(note, 'Sentence', tuple(note)))
+        self.assertEqual(note['Pinyin'], '')
+        self.assertIn('gǒu', note['Sentence Pinyin'])
+        self.assertIn('[sound:', note['Sentence Audio'])
+        self.assertIn('狗叫', note['Sentence Audio'])
+
+    def test_tab_out_of_word_fills_both_scopes_without_cross_talk(self):
+        self.use_mapping()
+        note = {'Expression': '猫', 'Sentence': '狗叫',
+                'Pinyin': '', 'Sentence Pinyin': ''}
+        update_fields(note, 'Expression', tuple(note))
+        self.assertIn('māo', note['Pinyin'])
+        self.assertNotIn('gǒu', note['Pinyin'])
+        self.assertIn('gǒu', note['Sentence Pinyin'])
+        self.assertNotIn('māo', note['Sentence Pinyin'])
+
+    def test_clearing_word_preserves_sentence_fields(self):
+        self.use_mapping()
+        note = {'Hanzi': '', 'Expression': '猫', 'Sentence': '狗叫',
+                'Pinyin': 'old', 'Sentence Pinyin': 'old2'}
+        update_fields(note, 'Hanzi', tuple(note))
+        self.assertEqual(note['Pinyin'], '')
+        self.assertEqual(note['Sentence Pinyin'], 'old2')

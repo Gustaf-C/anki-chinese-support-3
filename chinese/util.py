@@ -46,7 +46,7 @@ def all_fields_empty(note, fields):
 
 def erase_fields(note, fields):
     for f in fields:
-        set_all(f, note, to='')
+        set_all([f], note, to='')
 
 
 def get_first(fields, note):

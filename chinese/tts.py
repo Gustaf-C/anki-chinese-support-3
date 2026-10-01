@@ -7,7 +7,7 @@
 # License: GNU AGPL, version 3 or later; http://www.gnu.org/copyleft/agpl.html
 
 import ssl
-from os.path import basename, exists, join
+from os.path import basename, exists, getsize, join
 from re import sub
 from urllib.parse import urlencode
 from urllib.request import Request, urlopen
@@ -44,14 +44,31 @@ class AudioDownloader:
 
     def download(self):
         if exists(self.path):
-            return basename(self.path)
-
+            try:
+                if getsize(self.path) > 0:
+                    return basename(self.path)
+            except OSError:
+                return ''
+            # A stale empty file from a failed download: try again below.
         if not self.func:
             raise NotImplementedError(self.service)
 
         self.func()
 
-        return basename(self.path)
+        try:
+            with open(self.path, 'rb') as f:
+                data = f.read()
+        except OSError:
+            return ''
+        if not data:
+            return ''
+        # Register the file with Anki's media manager. Raw writes into
+        # collection.media bypass the registry, which later makes apkg
+        # export demand a manual Check Media.
+        try:
+            return mw.col.media.write_data(basename(self.path), data)
+        except Exception:
+            return basename(self.path)
 
     def get_google(self):
         tts = gTTS(self.text, lang=self.lang, tld='com')

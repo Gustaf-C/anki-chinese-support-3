@@ -48,8 +48,16 @@ modules = {
 if network_integration:
     media_dir = mkdtemp()
 else:
-    media_dir = 'collection.media'
+    media_dir = mkdtemp()
+
+    def _fake_gtts_save(path):
+        # Mirror reality: a successful backend writes the file, so
+        # download verification behaves the same under test.
+        with open(path, 'wb') as f:
+            f.write(b'test audio')
+
     modules['gtts'] = MagicMock()
+    modules['gtts'].gTTS.return_value.save.side_effect = _fake_gtts_save
     modules['gtts.tts'] = MagicMock()
     modules['requests'] = MagicMock()
 
@@ -61,6 +69,10 @@ with open(path.join(configDir, "config.json"), encoding='utf-8') as config_fd:
 
 patch('aqt.mw.addonManager.getConfig', lambda a: config).start()
 patch('aqt.mw.col.media.dir', MagicMock(return_value=media_dir)).start()
+if not network_integration:
+    # Registration echoes the requested name, like the real media manager
+    # does when the content is new.
+    patch('aqt.mw.col.media.write_data', lambda fname, data: fname).start()
 
 
 class Base(TestCase):
